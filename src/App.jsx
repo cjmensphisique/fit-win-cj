@@ -27,6 +27,8 @@ const AdminCheckIns = lazy(() => import('./pages/admin/AdminCheckIns'));
 const Analytics = lazy(() => import('./pages/admin/Analytics'));
 const Messages = lazy(() => import('./pages/Messages'));
 
+import InstallPrompt from './components/InstallPrompt';
+
 function App() {
   return (
     <DataProvider>
@@ -76,6 +78,7 @@ function App() {
               <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
           </Suspense>
+          <InstallPrompt />
         </BrowserRouter>
       </AuthProvider>
     </DataProvider>

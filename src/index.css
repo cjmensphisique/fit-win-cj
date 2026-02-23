@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global font */
+* {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Override browser autofill background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #1e1e1e inset !important;
+  box-shadow: 0 0 0 1000px #1e1e1e inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+}

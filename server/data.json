@@ -1,0 +1,615 @@
+{
+  "admin": {
+    "name": "CJ",
+    "email": "chiranjeeviwyld5@gmail.com",
+    "password": "Cjfitness@55"
+  },
+  "clients": [
+    {
+      "name": "John Doe",
+      "email": "john@test.com",
+      "phone": "1234567890",
+      "password": "pass123",
+      "weight": "80",
+      "height": "180",
+      "age": "30",
+      "address": "Test Addr",
+      "goal": "Hypertrophy",
+      "id": "1771408882841",
+      "joinedDate": "2026-02-18",
+      "photos": []
+    },
+    {
+      "name": "Jeevi",
+      "email": "chiranjeeviwyld7@gmail.com",
+      "phone": "9962400394",
+      "password": "Cjfitness@55",
+      "weight": "90",
+      "height": "200",
+      "age": "28",
+      "address": "no: 2 mandhaveli, madhavaram, ch - 60.",
+      "goal": "Fat Loss",
+      "id": "1771412665898",
+      "joinedDate": "2026-02-18",
+      "photos": [],
+      "badges": [
+        {
+          "id": "first-checkin",
+          "title": "First Step",
+          "icon": "Star",
+          "dateAwarded": "2026-02-20T11:18:44.647Z"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "title": "do pushup ",
+      "date": "2026-02-19",
+      "clientId": "1771412665898",
+      "type": "workout",
+      "description": "do 50 pushup as 3 sets",
+      "id": "1771412767122",
+      "assignedBy": "chiranjeeviwyld5@gmail.com",
+      "completed": false
+    }
+  ],
+  "notifications": [
+    {
+      "id": "1771591547684",
+      "userId": "1771412665898",
+      "message": "New message from Coach CJ",
+      "type": "info",
+      "icon": "message",
+      "read": true,
+      "createdAt": "2026-02-20T12:45:47.684Z"
+    },
+    {
+      "id": "1771591534159",
+      "userId": "1771412665898",
+      "message": "New message from Coach CJ",
+      "type": "info",
+      "icon": "message",
+      "read": true,
+      "createdAt": "2026-02-20T12:45:34.160Z"
+    },
+    {
+      "id": "1771591516366",
+      "userId": "admin",
+      "message": "New message from Jeevi",
+      "type": "info",
+      "icon": "message",
+      "read": false,
+      "createdAt": "2026-02-20T12:45:16.366Z"
+    },
+    {
+      "id": "1771591378054",
+      "userId": "1771412665898",
+      "message": "New message from Coach CJ",
+      "type": "info",
+      "icon": "message",
+      "read": true,
+      "createdAt": "2026-02-20T12:42:58.054Z"
+    },
+    {
+      "id": "1771591366700",
+      "userId": "1771412665898",
+      "message": "New message from Coach CJ",
+      "type": "info",
+      "icon": "message",
+      "read": true,
+      "createdAt": "2026-02-20T12:42:46.700Z"
+    },
+    {
+      "id": "1771591340745",
+      "userId": "1771412665898",
+      "message": "New message from Coach CJ",
+      "type": "info",
+      "icon": "message",
+      "read": true,
+      "createdAt": "2026-02-20T12:42:20.745Z"
+    },
+    {
+      "id": "1771591319639",
+      "userId": "1771412665898",
+      "message": "New message from Coach CJ",
+      "type": "info",
+      "icon": "message",
+      "read": true,
+      "createdAt": "2026-02-20T12:41:59.639Z"
+    },
+    {
+      "id": "1771591265020",
+      "userId": "admin",
+      "message": "New message from Jeevi",
+      "type": "info",
+      "icon": "message",
+      "read": false,
+      "createdAt": "2026-02-20T12:41:05.020Z"
+    },
+    {
+      "id": "1771591090867",
+      "userId": "admin",
+      "message": "New message from Jeevi",
+      "type": "info",
+      "icon": "message",
+      "read": false,
+      "createdAt": "2026-02-20T12:38:10.867Z"
+    },
+    {
+      "id": "1771589873913",
+      "userId": "1771412665898",
+      "message": "New message from Coach CJ",
+      "type": "info",
+      "icon": "message",
+      "read": true,
+      "createdAt": "2026-02-20T12:17:53.913Z"
+    },
+    {
+      "id": "1771589836514",
+      "userId": "admin",
+      "message": "New message from Jeevi",
+      "type": "info",
+      "icon": "message",
+      "read": false,
+      "createdAt": "2026-02-20T12:17:16.514Z"
+    },
+    {
+      "id": "1771589791448",
+      "userId": "admin",
+      "message": "New message from Jeevi",
+      "type": "info",
+      "icon": "message",
+      "read": false,
+      "createdAt": "2026-02-20T12:16:31.448Z"
+    },
+    {
+      "id": "1771589380433",
+      "userId": "1771412665898",
+      "message": "Your coach reviewed your Check-In! \"you can do this my nigg\"",
+      "type": "success",
+      "icon": "metrics",
+      "read": true,
+      "createdAt": "2026-02-20T12:09:40.433Z"
+    },
+    {
+      "id": "1771589150657",
+      "userId": "1771412665898",
+      "message": "Your coach reviewed your Check-In! ",
+      "type": "success",
+      "icon": "metrics",
+      "read": true,
+      "createdAt": "2026-02-20T12:05:50.657Z"
+    },
+    {
+      "id": "1771588446680",
+      "userId": "1771412665898",
+      "message": "New message from Coach CJ",
+      "type": "info",
+      "icon": "message",
+      "read": true,
+      "createdAt": "2026-02-20T11:54:06.680Z"
+    },
+    {
+      "id": "1771586324705",
+      "userId": "1771412665898",
+      "message": "🏆 You earned a new badge: First Step!",
+      "type": "success",
+      "icon": "metrics",
+      "read": true,
+      "createdAt": "2026-02-20T11:18:44.705Z"
+    },
+    {
+      "id": "1771493244737",
+      "userId": "1771408882841",
+      "message": "A new meal plan \"SXQDQ\" has been assigned to you!",
+      "type": "success",
+      "icon": "nutrition",
+      "read": false,
+      "createdAt": "2026-02-19T09:27:24.737Z"
+    },
+    {
+      "id": "1771492993170",
+      "userId": "1771412665898",
+      "message": "New invoice: \"dfssf\" — ₹5000 due 2016-06-28",
+      "type": "info",
+      "icon": "billing",
+      "read": true,
+      "createdAt": "2026-02-19T09:23:13.170Z"
+    },
+    {
+      "id": "1771492945639",
+      "userId": "1771412665898",
+      "message": "A new meal plan \"brakefast\" has been assigned to you!",
+      "type": "success",
+      "icon": "nutrition",
+      "read": true,
+      "createdAt": "2026-02-19T09:22:25.639Z"
+    },
+    {
+      "id": "1771492737212",
+      "userId": "1771412665898",
+      "message": "New invoice: \"monthly coaching\" — ₹5000 due 2016-06-28",
+      "type": "info",
+      "icon": "billing",
+      "read": true,
+      "createdAt": "2026-02-19T09:18:57.212Z"
+    },
+    {
+      "id": "1771485658685",
+      "userId": "1771408882841",
+      "message": "A new workout plan \"Push Day Blast\" has been assigned to you!",
+      "type": "success",
+      "icon": "workout",
+      "read": true,
+      "createdAt": "2026-02-19T07:20:58.685Z"
+    },
+    {
+      "id": "1771419236918",
+      "userId": "1771408882841",
+      "message": "A new workout plan \"John's Hypertrophy Plan\" has been assigned to you!",
+      "type": "success",
+      "icon": "workout",
+      "read": true,
+      "createdAt": "2026-02-18T12:53:56.918Z"
+    }
+  ],
+  "workoutPlans": [
+    {
+      "name": "John's Hypertrophy Plan",
+      "description": "",
+      "durationWeeks": 4,
+      "clientId": "1771408882841",
+      "schedule": {
+        "Monday": [
+          {
+            "id": "17714191998870.7945965896284407",
+            "name": "Bench Press",
+            "sets": "4",
+            "reps": "8-12",
+            "rest": "90s",
+            "notes": ""
+          }
+        ],
+        "Tuesday": [],
+        "Wednesday": [],
+        "Thursday": [],
+        "Friday": [],
+        "Saturday": [],
+        "Sunday": []
+      },
+      "id": "1771419236780",
+      "createdAt": "2026-02-18T12:53:56.780Z",
+      "updatedAt": "2026-02-18T12:53:56.780Z"
+    },
+    {
+      "name": "Push Day Blast",
+      "description": "",
+      "durationWeeks": "8",
+      "clientId": "1771408882841",
+      "schedule": {
+        "Monday": [
+          {
+            "id": "17714856273060.22846026338566283",
+            "name": "Barbell Squat",
+            "sets": "4",
+            "reps": "8",
+            "rest": "90s",
+            "notes": ""
+          }
+        ],
+        "Tuesday": [],
+        "Wednesday": [],
+        "Thursday": [],
+        "Friday": [],
+        "Saturday": [],
+        "Sunday": []
+      },
+      "id": "1771485658604",
+      "createdAt": "2026-02-19T07:20:58.604Z",
+      "updatedAt": "2026-02-19T07:20:58.604Z"
+    }
+  ],
+  "exercises": [
+    {
+      "name": "pistol squats",
+      "muscleGroup": "Legs",
+      "equipment": "Bodyweight",
+      "difficulty": "Intermediate",
+      "description": "its a body weight exercise, do it",
+      "defaultSets": 3,
+      "defaultReps": "8-12",
+      "defaultRest": "60s",
+      "id": "1771492540187",
+      "createdAt": "2026-02-19T09:15:40.187Z"
+    }
+  ],
+  "mealPlans": [
+    {
+      "name": "brakefast",
+      "clientId": "1771412665898",
+      "goal": "Cut",
+      "schedule": {
+        "Monday": {
+          "breakfast": [
+            {
+              "food": "soya chunks",
+              "portion": "15 pc",
+              "protein": "",
+              "carbs": "",
+              "fat": "",
+              "calories": ""
+            },
+            {
+              "food": "chick peas",
+              "portion": "1 hand",
+              "protein": "",
+              "carbs": "",
+              "fat": "",
+              "calories": ""
+            },
+            {
+              "food": "almonds",
+              "portion": "15",
+              "protein": "",
+              "carbs": "",
+              "fat": "",
+              "calories": ""
+            }
+          ],
+          "lunch": [],
+          "dinner": [],
+          "snacks": []
+        },
+        "Tuesday": {
+          "breakfast": [],
+          "lunch": [],
+          "dinner": [],
+          "snacks": []
+        },
+        "Wednesday": {
+          "breakfast": [],
+          "lunch": [],
+          "dinner": [],
+          "snacks": []
+        },
+        "Thursday": {
+          "breakfast": [],
+          "lunch": [],
+          "dinner": [],
+          "snacks": []
+        },
+        "Friday": {
+          "breakfast": [],
+          "lunch": [],
+          "dinner": [],
+          "snacks": []
+        },
+        "Saturday": {
+          "breakfast": [],
+          "lunch": [],
+          "dinner": [],
+          "snacks": []
+        },
+        "Sunday": {
+          "breakfast": [],
+          "lunch": [],
+          "dinner": [],
+          "snacks": []
+        }
+      },
+      "id": "1771492945612",
+      "createdAt": "2026-02-19T09:22:25.612Z",
+      "updatedAt": "2026-02-19T09:22:25.612Z"
+    }
+  ],
+  "messages": [
+    {
+      "senderId": "admin",
+      "receiverId": "test123",
+      "text": "Hello",
+      "id": "1771492374289",
+      "read": false,
+      "createdAt": "2026-02-19T09:12:54.289Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771408882841",
+      "text": "hi john",
+      "id": "1771492452081",
+      "read": false,
+      "createdAt": "2026-02-19T09:14:12.081Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "its cj here, wats your  query",
+      "id": "1771492467675",
+      "read": true,
+      "createdAt": "2026-02-19T09:14:27.675Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "oi",
+      "id": "1771500479319",
+      "read": true,
+      "createdAt": "2026-02-19T11:27:59.319Z"
+    },
+    {
+      "senderId": "1771412665898",
+      "receiverId": "admin",
+      "text": "yes coach",
+      "id": "1771500498812",
+      "read": true,
+      "createdAt": "2026-02-19T11:28:18.812Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "helllo",
+      "id": "1771500693015",
+      "read": true,
+      "createdAt": "2026-02-19T11:31:33.015Z"
+    },
+    {
+      "senderId": "1771412665898",
+      "receiverId": "admin",
+      "text": "yes coach",
+      "id": "1771500707122",
+      "read": true,
+      "createdAt": "2026-02-19T11:31:47.122Z"
+    },
+    {
+      "senderId": "1771412665898",
+      "receiverId": "admin",
+      "text": "hello",
+      "id": "1771586873602",
+      "read": true,
+      "createdAt": "2026-02-20T11:27:53.602Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "testing",
+      "id": "1771588446643",
+      "read": true,
+      "createdAt": "2026-02-20T11:54:06.643Z"
+    },
+    {
+      "senderId": "1771412665898",
+      "receiverId": "admin",
+      "text": "hello coach",
+      "id": "1771589791414",
+      "read": true,
+      "createdAt": "2026-02-20T12:16:31.414Z"
+    },
+    {
+      "senderId": "1771412665898",
+      "receiverId": "admin",
+      "text": "hiii",
+      "id": "1771589836480",
+      "read": true,
+      "createdAt": "2026-02-20T12:17:16.480Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "yes tell me",
+      "id": "1771589873873",
+      "read": true,
+      "createdAt": "2026-02-20T12:17:53.873Z"
+    },
+    {
+      "senderId": "1771412665898",
+      "receiverId": "admin",
+      "text": "hi",
+      "id": "1771591090821",
+      "read": true,
+      "createdAt": "2026-02-20T12:38:10.821Z"
+    },
+    {
+      "senderId": "1771412665898",
+      "receiverId": "admin",
+      "text": "hello coach",
+      "id": "1771591264981",
+      "read": true,
+      "createdAt": "2026-02-20T12:41:04.981Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "yes",
+      "id": "1771591319594",
+      "read": true,
+      "createdAt": "2026-02-20T12:41:59.594Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "oi",
+      "id": "1771591340707",
+      "read": true,
+      "createdAt": "2026-02-20T12:42:20.707Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "hello",
+      "id": "1771591366653",
+      "read": true,
+      "createdAt": "2026-02-20T12:42:46.653Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "oi",
+      "id": "1771591378015",
+      "read": true,
+      "createdAt": "2026-02-20T12:42:58.015Z"
+    },
+    {
+      "senderId": "1771412665898",
+      "receiverId": "admin",
+      "text": "oii",
+      "id": "1771591516331",
+      "read": true,
+      "createdAt": "2026-02-20T12:45:16.331Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "hello",
+      "id": "1771591534122",
+      "read": true,
+      "createdAt": "2026-02-20T12:45:34.122Z"
+    },
+    {
+      "senderId": "admin",
+      "receiverId": "1771412665898",
+      "text": "oi",
+      "id": "1771591547648",
+      "read": true,
+      "createdAt": "2026-02-20T12:45:47.648Z"
+    }
+  ],
+  "metrics": [],
+  "payments": [
+    {
+      "clientId": "1771412665898",
+      "description": "dfssf",
+      "amount": 5000,
+      "currency": "INR",
+      "status": "paid",
+      "dueDate": "2016-06-28",
+      "notes": "dqdw",
+      "id": "1771492993137",
+      "createdAt": "2026-02-19T09:23:13.137Z",
+      "paidDate": "2026-02-20"
+    }
+  ],
+  "goals": [],
+  "checkIns": [
+    {
+      "clientId": "1771412665898",
+      "weight": "90",
+      "energyLevel": "9",
+      "sleepQuality": "8",
+      "notes": "feeling ache",
+      "id": "1771586324625",
+      "reviewed": true,
+      "createdAt": "2026-02-20T11:18:44.625Z"
+    },
+    {
+      "clientId": "1771412665898",
+      "weight": "90",
+      "energyLevel": "9",
+      "sleepQuality": "8",
+      "notes": "knee pain",
+      "id": "1771589334621",
+      "reviewed": true,
+      "createdAt": "2026-02-20T12:08:54.621Z",
+      "adminReply": "you can do this my nigg"
+    }
+  ]
+}

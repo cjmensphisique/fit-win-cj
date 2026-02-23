@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cron from 'node-cron';
 import * as models from './db.js';
 
 dotenv.config({ path: '../.env' }); // Ensure it catches .env from parent folder if running inside server/ 
@@ -417,6 +418,33 @@ app.patch('/api/check-ins/:id', async (req, res) => {
     const checkIn = await models.CheckIn.findOneAndUpdate({ id: req.params.id }, req.body, { new: true });
     res.json(checkIn);
   } catch { res.status(500).json({ error: 'Failed to update check-in' }); }
+});
+
+// ─── CRON JOBS ─────────────────────────────────────────────────────────────────
+// Run every Monday at 9:00 AM server time (0 9 * * 1)
+cron.schedule('0 9 * * 1', async () => {
+  console.log('Running automated Monday check-in reminders...');
+  try {
+    const clients = await models.Client.find();
+    
+    // Create an array of notification promises
+    const notifications = clients.map(client => {
+      return new models.Notification({
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+        userId: client.id,
+        message: "Happy Monday! Don't forget to submit your weekly check-in today to track your progress.",
+        type: 'info',
+        icon: 'bell',
+        read: false,
+        createdAt: new Date().toISOString()
+      }).save();
+    });
+
+    await Promise.all(notifications);
+    console.log(`Successfully sent check-in reminders to ${notifications.length} clients.`);
+  } catch (error) {
+    console.error('Failed to run automated Monday reminders:', error);
+  }
 });
 
 app.listen(PORT, () => {

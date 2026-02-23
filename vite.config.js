@@ -16,8 +16,8 @@ export default defineConfig({
         name: 'CJ Fitness App',
         short_name: 'CJ Fitness',
         description: 'Elite personal training and fitness tracking',
-        theme_color: '#ffc105',
-        background_color: '#111827',
+        theme_color: '#141414',
+        background_color: '#141414',
         display: 'standalone',
         icons: [
           {

@@ -3,16 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffc105" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#141414" />
     <title>CJ Fitness</title>
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      /* Pre-React Splash Screen CSS */
+      body, html {
+        margin: 0;
+        padding: 0;
+        background-color: #141414; /* True dark background to prevent white flash */
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+      
+      #global-loader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #141414;
+        z-index: 99999;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      .loader-logo {
+        font-family: 'Inter', sans-serif;
+        font-size: 32px;
+        font-weight: 900;
+        letter-spacing: -1px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        animation: pulse 2s infinite ease-in-out;
+      }
+      
+      .loader-logo span:first-child { color: #ffc105; }
+      .loader-logo span:last-child { color: #fff; }
+      
+      @keyframes pulse {
+        0% { opacity: 0.6; transform: scale(0.98); }
+        50% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0.6; transform: scale(0.98); }
+      }
+    </style>
   </head>
   <body>
+    <!-- Splash Screen that shows immediately before JS downloads -->
+    <div id="global-loader">
+      <div class="loader-logo">
+        <span>CJ</span><span>FITNESS</span>
+      </div>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <script>
+      // Remove the splash screen smoothly once the main app is ready
+      // This will be called from inside main.jsx or when window loads
+      window.onload = function() {
+        const loader = document.getElementById('global-loader');
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(() => loader.remove(), 500);
+        }
+      }
+    </script>
   </body>
 </html>

@@ -4,7 +4,7 @@ import {
   ChevronDown, Filter, BookOpen, Zap
 } from 'lucide-react';
 
-const API = 'http://localhost:3001';
+import { API_URL as API } from '../../api';
 
 const MUSCLE_GROUPS = [
   'All', 'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps',

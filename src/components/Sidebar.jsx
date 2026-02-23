@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
 import logoUrl from '../assets/logo.jpeg';
+import { API_URL } from '../api';
 import {
   LayoutDashboard, Users,
   LogOut, BookOpen, Apple, Scale, CreditCard,
@@ -47,7 +48,7 @@ function Sidebar({ onClose }) {
 
     const fetchAll = () => {
       loadNotifications(receiverId);
-      fetch(`http://localhost:3001/api/messages/${receiverId}`)
+      fetch(`${API_URL}/api/messages/${receiverId}`)
         .then(res => res.json())
         .then(msgs => {
           console.log('Sidebar msgs:', msgs);

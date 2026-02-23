@@ -4,7 +4,7 @@ import {
   Apple, Plus, Trash2, Edit2, X, ChevronDown, Users, Save
 } from 'lucide-react';
 
-const API = 'http://localhost:3001';
+import { API_URL as API } from '../../api';
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snacks'];
 const MEAL_LABELS = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snacks: 'Snacks' };

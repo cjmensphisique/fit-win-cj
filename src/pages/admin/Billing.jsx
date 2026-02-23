@@ -5,7 +5,7 @@ import {
   AlertCircle, X, ChevronDown, Pencil
 } from 'lucide-react';
 
-const API = 'http://localhost:3001';
+import { API_URL as API } from '../../api';
 
 const STATUS_CONFIG = {
   pending:  { label: 'Pending',  color: '#ffc105', bg: 'rgba(255,193,5,0.1)',   icon: Clock },

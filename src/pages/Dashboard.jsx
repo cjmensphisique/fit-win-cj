@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
+import { API_URL } from '../api';
 import {
   Users, Dumbbell, BookOpen, Apple, Scale,
   CreditCard, MessageSquare, CheckCircle, TrendingUp, AlertCircle, 
@@ -136,11 +137,11 @@ export default function Dashboard() {
     
     const fetchExtra = async () => {
       try {
-        const p = await fetch('http://localhost:3001/api/payments');
+        const p = await fetch(`${API_URL}/api/payments`);
         setPayments(await p.json());
       } catch {}
       try {
-        const m = await fetch(`http://localhost:3001/api/messages/${targetId}`);
+        const m = await fetch(`${API_URL}/api/messages/${targetId}`);
         setMessages(await m.json());
       } catch {}
     };
@@ -211,13 +212,13 @@ export default function Dashboard() {
     const handleDeleteActivity = async (id, type) => {
       try {
         if (type === 'message') {
-          await fetch(`http://localhost:3001/api/messages/${id}`, { method: 'DELETE' });
+          await fetch(`${API_URL}/api/messages/${id}`, { method: 'DELETE' });
           setMessages(prev => prev.filter(m => m.id !== id));
         } else if (type === 'payment' || type === 'money') {
-          await fetch(`http://localhost:3001/api/payments/${id}`, { method: 'DELETE' });
+          await fetch(`${API_URL}/api/payments/${id}`, { method: 'DELETE' });
           setPayments(prev => prev.filter(p => p.id !== id));
         } else if (type === 'notif') {
-          await fetch(`http://localhost:3001/api/notifications/${id}`, { method: 'DELETE' });
+          await fetch(`${API_URL}/api/notifications/${id}`, { method: 'DELETE' });
           loadNotifications(isAdmin ? 'admin' : user.id);
         } else if (type === 'user') {
           const newHidden = [...hiddenActivities, `user_${id}`];

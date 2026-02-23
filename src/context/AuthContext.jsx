@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { useData } from './DataContext';
+import { API_URL } from '../api';
 
 const AuthContext = createContext();
 
@@ -54,7 +55,7 @@ export function AuthProvider({ children }) {
 
     const checkClientExists = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/api/clients/${user.id}`);
+        const res = await fetch(`${API_URL}/api/clients/${user.id}`);
         // If the server explicitly returns 404 Not Found, the client was deleted
         if (res.status === 404) {
           logout();

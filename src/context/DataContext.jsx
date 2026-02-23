@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
-import { api } from '../api';
+import { api, API_URL } from '../api';
 
 const DataContext = createContext();
 
@@ -194,14 +194,14 @@ export function DataProvider({ children }) {
   
   const loadGoals = useCallback(async (clientId) => {
     try {
-      const res = await fetch(`${api.API}/api/goals/${clientId}`);
+      const res = await fetch(`${API_URL}/api/goals/${clientId}`);
       if (res.ok) setGoals(await res.json());
     } catch {}
   }, []);
 
   const createGoal = async (goal) => {
     try {
-      const res = await fetch(`${api.API}/api/goals`, {
+      const res = await fetch(`${API_URL}/api/goals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(goal),
@@ -216,7 +216,7 @@ export function DataProvider({ children }) {
 
   const updateGoal = async (id, updates) => {
     try {
-      await fetch(`${api.API}/api/goals/${id}`, {
+      await fetch(`${API_URL}/api/goals/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
@@ -226,7 +226,7 @@ export function DataProvider({ children }) {
   };
 
   const deleteGoal = async (id) => {
-    await fetch(`${api.API}/api/goals/${id}`, { method: 'DELETE' });
+    await fetch(`${API_URL}/api/goals/${id}`, { method: 'DELETE' });
     setGoals(prev => prev.filter(g => g.id !== id));
   };
 

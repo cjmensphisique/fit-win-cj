@@ -5,7 +5,7 @@ import {
   MessageSquare, Send, Search, User, Users, ArrowLeft
 } from 'lucide-react';
 
-const API = 'http://localhost:3001';
+import { API_URL as API } from '../api';
 const ADMIN_ID = 'admin';
 
 function timeAgo(iso) {

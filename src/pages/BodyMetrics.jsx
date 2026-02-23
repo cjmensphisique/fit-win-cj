@@ -5,7 +5,7 @@ import {
   ChevronDown, X, Ruler, Zap
 } from 'lucide-react';
 
-const API = 'http://localhost:3001';
+import { API_URL as API } from '../api';
 
 const FIELDS = [
   { key: 'weight',  label: 'Weight',    unit: 'kg',  color: '#ffc105' },

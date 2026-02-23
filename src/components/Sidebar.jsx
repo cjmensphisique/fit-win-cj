@@ -150,8 +150,6 @@ function Sidebar({ onClose }) {
     return location.pathname.startsWith(path);
   };
 
-  const unread = (notifications || []).filter(n => !n.read);
-
   const handleNotifClick = async (notif) => {
     if (!notif.read) await markNotificationRead(notif.id);
     const route = notifRoute(notif, user?.role);

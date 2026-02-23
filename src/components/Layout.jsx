@@ -146,12 +146,12 @@ export default function Layout() {
         >
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-xl transition-colors"
+            className="p-2 rounded-xl transition-colors shrink-0"
             style={{ color: '#aaa' }}
             onMouseEnter={e => e.currentTarget.style.color = '#fff'}
             onMouseLeave={e => e.currentTarget.style.color = '#aaa'}
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-8 h-8" />
           </button>
           <span className="text-base font-black">
             <span style={{ color: '#ffc105' }}>CJ</span>

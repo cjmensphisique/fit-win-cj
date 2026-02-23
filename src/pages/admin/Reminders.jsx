@@ -91,7 +91,7 @@ export default function Reminders() {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
       <div className="flex items-center gap-3 mb-8">
         <div className="p-3 bg-yellow-500/20 rounded-xl">
           <AlarmClock className="w-8 h-8 text-yellow-500" />
@@ -102,9 +102,9 @@ export default function Reminders() {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-12 gap-6">
         {/* Create Reminder Form */}
-        <div className="md:col-span-1 bg-[#1a1a1a] rounded-2xl border border-zinc-800 p-6 flex flex-col h-fit">
+        <div className="lg:col-span-4 xl:col-span-3 bg-[#1a1a1a] rounded-2xl border border-zinc-800 p-6 flex flex-col h-fit">
           <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
             <Plus className="w-5 h-5 text-yellow-500" />
             New Alarm
@@ -120,11 +120,15 @@ export default function Reminders() {
               <select 
                 value={selectedClient} 
                 onChange={e => setSelectedClient(e.target.value)}
-                className="w-full bg-[#111] border border-zinc-800 text-white rounded-xl p-3 focus:border-yellow-500 focus:outline-none transition-colors"
+                className="w-full bg-[#111] border border-zinc-800 text-white rounded-xl p-3 text-base focus:border-yellow-500 focus:outline-none transition-colors appearance-none"
+                style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffc105%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.7rem top 50%', backgroundSize: '0.65rem auto' }}
                 required
               >
+                <option value="" disabled className="text-zinc-500">Select a Client...</option>
                 {clients.map(c => (
-                  <option key={c.id} value={c.id}>{c.name} ({c.email})</option>
+                  <option key={c.id} value={c.id} className="bg-[#1a1a1a] text-white">
+                    {c.name || 'Unnamed Client'} {c.email ? `(${c.email})` : ''}
+                  </option>
                 ))}
               </select>
             </div>
@@ -141,7 +145,7 @@ export default function Reminders() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-sm font-semibold text-zinc-400 flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5" /> Date
@@ -180,7 +184,7 @@ export default function Reminders() {
         </div>
 
         {/* Upcoming Reminders List */}
-        <div className="md:col-span-2 bg-[#1a1a1a] rounded-2xl border border-zinc-800 p-6 flex flex-col">
+        <div className="lg:col-span-8 xl:col-span-9 bg-[#1a1a1a] rounded-2xl border border-zinc-800 p-6 flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-white">Upcoming Alarms</h2>
             {clients.length > 0 && (

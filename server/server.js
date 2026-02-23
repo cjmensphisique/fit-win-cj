@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cron from 'node-cron';
 import * as models from './db.js';
+import { sendReminderEmail, sendMondayCheckinEmail } from './emailService.js';
 
 dotenv.config({ path: '../.env' }); // Ensure it catches .env from parent folder if running inside server/ 
 // To be safe, try both paths
@@ -466,7 +467,11 @@ cron.schedule('0 9 * * 1', async () => {
     const clients = await models.Client.find();
     
     // Create an array of notification promises
-    const notifications = clients.map(client => {
+    const promises = clients.map(async (client) => {
+      // Send Email
+      await sendMondayCheckinEmail(client.email, client.name);
+
+      // Create App Notification
       return new models.Notification({
         id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
         userId: client.id,
@@ -478,8 +483,8 @@ cron.schedule('0 9 * * 1', async () => {
       }).save();
     });
 
-    await Promise.all(notifications);
-    console.log(`Successfully sent check-in reminders to ${notifications.length} clients.`);
+    await Promise.all(promises);
+    console.log(`Successfully sent check-in reminders and emails to ${promises.length} clients.`);
   } catch (error) {
     console.error('Failed to run automated Monday reminders:', error);
   }
@@ -499,7 +504,15 @@ cron.schedule('* * * * *', async () => {
       console.log(`Triggering ${pendingReminders.length} custom reminders...`);
       
       const updatePromises = pendingReminders.map(async (reminder) => {
-        // 1. Create a notification for the client
+        // Find client to get email
+        const client = await models.Client.findOne({ id: reminder.clientId });
+
+        // 1. Send Email Notification
+        if (client) {
+          await sendReminderEmail(client.email, client.name, reminder.description);
+        }
+
+        // 2. Create an in-app notification for the client
         await new models.Notification({
           id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
           userId: reminder.clientId,
@@ -510,7 +523,7 @@ cron.schedule('* * * * *', async () => {
           createdAt: new Date().toISOString()
         }).save();
 
-        // 2. Mark reminder as triggered
+        // 3. Mark reminder as triggered
         reminder.isTriggered = true;
         await reminder.save();
       });

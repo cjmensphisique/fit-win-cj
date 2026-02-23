@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Users,
   LogOut, BookOpen, Apple, Scale, CreditCard,
   MessageSquare, Dumbbell, Calculator, Bell, Target, Check, X,
-  ChevronRight, Activity, TrendingUp
+  ChevronRight, Activity, TrendingUp, AlarmClock
 } from 'lucide-react';
 
 // Map notification icons to route destinations (client-side)
@@ -40,6 +40,42 @@ function Sidebar({ onClose }) {
   const prefix = isAdmin ? '/admin' : '/client';
 
   const [unreadMessages, setUnreadMessages] = useState(0);
+  const prevUnreadRef = useRef(0);
+
+  // Play a chime sound using Web Audio API
+  const playNotificationSound = () => {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime); // A5 note
+      osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.1); // Drop to A4
+
+      gainNode.gain.setValueAtTime(0, ctx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1);
+
+      osc.connect(gainNode);
+      gainNode.connect(ctx.destination);
+
+      osc.start();
+      osc.stop(ctx.currentTime + 1);
+    } catch (e) {
+      console.log('Audio playback prevented by browser policy');
+    }
+  };
+
+  // Check if unread count increased to play sound
+  const unread = (notifications || []).filter(n => !n.read);
+  useEffect(() => {
+    if (unread.length > prevUnreadRef.current && prevUnreadRef.current !== 0) {
+      playNotificationSound();
+    }
+    prevUnreadRef.current = unread.length;
+  }, [unread.length]);
 
   // Load notifications and messages for this user
   useEffect(() => {
@@ -84,6 +120,7 @@ function Sidebar({ onClose }) {
     { name: 'Dashboard',       path: '/admin',                   icon: LayoutDashboard },
     { name: 'Analytics',       path: '/admin/analytics',         icon: TrendingUp },
     { name: 'Clients',         path: '/admin/clients',           icon: Users },
+    { name: 'Reminders',       path: '/admin/reminders',         icon: AlarmClock },
     { name: 'Workout Plans',   path: '/admin/workout-plans',     icon: Dumbbell },
     { name: 'Exercise Library',path: '/admin/exercise-library',  icon: BookOpen },
     { name: 'Meal Plans',      path: '/admin/meal-plans',        icon: Apple },

@@ -22,6 +22,15 @@ const notificationSchema = new mongoose.Schema({
   id: { type: String, unique: true }
 });
 
+const reminderSchema = new mongoose.Schema({
+  id: String,
+  clientId: String,
+  description: String,
+  triggerDate: Date,
+  isTriggered: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+}, { collection: 'reminders' });
+
 const workoutPlanSchema = new mongoose.Schema({
   name: String, description: String, durationWeeks: Number,
   clientId: String, schedule: mongoose.Schema.Types.Mixed,
@@ -79,6 +88,7 @@ const goalSchema = new mongoose.Schema({
 export const Client = mongoose.model('Client', clientSchema);
 export const Task = mongoose.model('Task', taskSchema);
 export const Notification = mongoose.model('Notification', notificationSchema);
+export const Reminder = mongoose.model('Reminder', reminderSchema);
 export const WorkoutPlan = mongoose.model('WorkoutPlan', workoutPlanSchema);
 export const Exercise = mongoose.model('Exercise', exerciseSchema);
 export const MealPlan = mongoose.model('MealPlan', mealPlanSchema);

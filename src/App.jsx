@@ -26,6 +26,7 @@ const ClientCheckIns = lazy(() => import('./pages/ClientCheckIns'));
 const AdminCheckIns = lazy(() => import('./pages/admin/AdminCheckIns'));
 const Analytics = lazy(() => import('./pages/admin/Analytics'));
 const Messages = lazy(() => import('./pages/Messages'));
+const Reminders = lazy(() => import('./pages/admin/Reminders'));
 
 import InstallPrompt from './components/InstallPrompt';
 
@@ -54,6 +55,7 @@ function App() {
                   <Route path="/admin/billing" element={<Billing />} />
                   <Route path="/admin/bmr-calculator" element={<BMRCalculator />} />
                   <Route path="/admin/messages" element={<Messages />} />
+                  <Route path="/admin/reminders" element={<Reminders />} />
                   <Route path="/admin/metrics/:clientId" element={<BodyMetrics />} />
                 </Route>
               </Route>

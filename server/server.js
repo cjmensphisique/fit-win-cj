@@ -163,6 +163,37 @@ app.patch('/api/notifications/read-all/:userId', async (req, res) => {
   } catch (error) { res.status(500).json({ error: 'Failed to mark all read' }); }
 });
 
+// ─── REMINDERS ──────────────────────────────────────────────────────────────────
+
+app.get('/api/reminders/:clientId', async (req, res) => {
+  try {
+    const reminders = await models.Reminder.find({ clientId: req.params.clientId, isTriggered: false }).sort({ triggerDate: 1 });
+    res.json(reminders);
+  } catch (error) { res.status(500).json({ error: 'Failed to fetch reminders' }); }
+});
+
+app.post('/api/reminders', async (req, res) => {
+  try {
+    const reminder = new models.Reminder({
+      id: Date.now().toString(),
+      clientId: req.body.clientId,
+      description: req.body.description,
+      triggerDate: new Date(req.body.triggerDate),
+      isTriggered: false,
+      createdAt: new Date().toISOString(),
+    });
+    await reminder.save();
+    res.json(reminder);
+  } catch (error) { res.status(500).json({ error: 'Failed to create reminder' }); }
+});
+
+app.delete('/api/reminders/:id', async (req, res) => {
+  try {
+    await models.Reminder.deleteOne({ id: req.params.id });
+    res.json({ success: true });
+  } catch (error) { res.status(500).json({ error: 'Failed to delete reminder' }); }
+});
+
 // ─── WORKOUT PLANS ────────────────────────────────────────────────────────────
 
 app.get('/api/workout-plans', async (req, res) => {
@@ -421,7 +452,7 @@ app.patch('/api/check-ins/:id', async (req, res) => {
 });
 
 // ─── CRON JOBS ─────────────────────────────────────────────────────────────────
-// Run every Monday at 9:00 AM server time (0 9 * * 1)
+// 1. Run every Monday at 9:00 AM server time (0 9 * * 1) for check-ins
 cron.schedule('0 9 * * 1', async () => {
   console.log('Running automated Monday check-in reminders...');
   try {
@@ -444,6 +475,43 @@ cron.schedule('0 9 * * 1', async () => {
     console.log(`Successfully sent check-in reminders to ${notifications.length} clients.`);
   } catch (error) {
     console.error('Failed to run automated Monday reminders:', error);
+  }
+});
+
+// 2. Run every minute to check for triggering custom Reminders/Alarms
+cron.schedule('* * * * *', async () => {
+  try {
+    const now = new Date();
+    // Find reminders where triggerDate is past but they haven't triggered yet
+    const pendingReminders = await models.Reminder.find({
+      isTriggered: false,
+      triggerDate: { $lte: now }
+    });
+
+    if (pendingReminders.length > 0) {
+      console.log(`Triggering ${pendingReminders.length} custom reminders...`);
+      
+      const updatePromises = pendingReminders.map(async (reminder) => {
+        // 1. Create a notification for the client
+        await new models.Notification({
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+          userId: reminder.clientId,
+          message: `ALARM: ${reminder.description}`,
+          type: 'alert',
+          icon: 'bell',
+          read: false,
+          createdAt: new Date().toISOString()
+        }).save();
+
+        // 2. Mark reminder as triggered
+        reminder.isTriggered = true;
+        await reminder.save();
+      });
+
+      await Promise.all(updatePromises);
+    }
+  } catch (error) {
+    console.error('Failed to run custom reminders check:', error);
   }
 });
 

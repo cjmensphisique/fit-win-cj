@@ -145,7 +145,7 @@ export default function Reminders() {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-sm font-semibold text-zinc-400 flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5" /> Date

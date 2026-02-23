@@ -65,6 +65,13 @@ app.post('/api/clients', async (req, res) => {
   } catch (error) { res.status(500).json({ error: 'Failed to create client' }); }
 });
 
+app.get('/api/clients', async (req, res) => {
+  try {
+    const clients = await models.Client.find();
+    res.json(clients);
+  } catch (error) { res.status(500).json({ error: 'Failed to fetch clients' }); }
+});
+
 app.get('/api/clients/:id', async (req, res) => {
   try {
     const client = await models.Client.findOne({ id: req.params.id });

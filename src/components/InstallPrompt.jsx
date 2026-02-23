@@ -13,7 +13,11 @@ export default function InstallPrompt() {
       return; // Already installed, do nothing
     }
 
-    // Handle standard Android/Desktop PWA prompt
+    // Only show the install prompt on mobile devices
+    const isMobile = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
+    if (!isMobile) return; // Do not show on desktop browsers
+
+    // Handle standard Android PWA prompt
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);

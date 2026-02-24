@@ -201,34 +201,32 @@ export default function GoalTracker() {
   const handleCheckIn = async (idx, isChecked) => {
     if (!activeGoal) return;
     
+    // Ensure checkins exists
+    const checkins = activeGoal.checkins || [];
+    
     // Existing checkins for today?
-    let todayCheckin = activeGoal.checkins.find(c => c.date === today);
-    if (!todayCheckin) {
-      todayCheckin = { date: today, completedHabits: [] };
-      activeGoal.checkins.push(todayCheckin);
-    }
-
-    // Update completed habits
-    let habits = todayCheckin.completedHabits || [];
-    if (isChecked) {
-      if (!habits.includes(idx)) habits.push(idx);
+    let todayIndex = checkins.findIndex(c => c.date === today);
+    let updatedCheckins = [...checkins];
+    
+    if (todayIndex === -1) {
+      updatedCheckins.push({ date: today, completedHabits: [idx], streakCounted: true });
     } else {
-      habits = habits.filter(i => i !== idx);
+      let habits = [...(updatedCheckins[todayIndex].completedHabits || [])];
+      if (isChecked) {
+        if (!habits.includes(idx)) habits.push(idx);
+      } else {
+        habits = habits.filter(i => i !== idx);
+      }
+      updatedCheckins[todayIndex] = { 
+        ...updatedCheckins[todayIndex], 
+        completedHabits: habits,
+        streakCounted: habits.length > 0
+      };
     }
-    
-    // Check if daily streak content met (e.g. >50% habits done?)
-    // For simplicity: Streak incr if at least 1 habit done today
-    const wasStreak = todayCheckin.streakCounted;
-    const isStreak = habits.length > 0;
-    
-    // Optimistic Update
-    const updatedCheckins = activeGoal.checkins.map(c => c.date === today ? { ...c, completedHabits: habits, streakCounted: isStreak } : c);
     
     // Calculate new streak
-    // Logic: If yesterday had streak, and today has streak, streak = Streak + 1. 
-    // This is complex for frontend-only optimism.
-    
-    // Simple update
+    // For simplicity, we'll let the backend handle complex streak logic if needed, 
+    // but we update the goal with new checkins here.
     await updateGoal(activeGoal.id, { checkins: updatedCheckins });
   };
   
@@ -298,8 +296,8 @@ export default function GoalTracker() {
               </div>
               
               <div className="space-y-3">
-                {activeGoal.dailyTargets.map((target, idx) => {
-                  const todayCheckin = activeGoal.checkins?.find(c => c.date === today);
+                {(activeGoal.dailyTargets || []).map((target, idx) => {
+                  const todayCheckin = (activeGoal.checkins || []).find(c => c.date === today);
                   const isDone = todayCheckin?.completedHabits?.includes(idx);
                   
                   return (
@@ -339,7 +337,7 @@ export default function GoalTracker() {
               </div>
               
               <div className="space-y-4">
-                 {activeGoal.monthlyTargets.map((m, i) => (
+                 {(activeGoal.monthlyTargets || []).map((m, i) => (
                    <div key={i} className="bg-[#161616] border border-[#222] p-5 rounded-2xl flex gap-4">
                      <div className="flex flex-col items-center gap-1">
                         <div className="w-0.5 h-full bg-[#222] rounded-full" />

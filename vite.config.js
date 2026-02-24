@@ -33,7 +33,13 @@ export default defineConfig({
         ]
       },
       devOptions: {
-        enabled: true
+        enabled: true,
+        type: 'module'
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        // Suppress warning when no files are found in dev-dist
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       }
     })
   ]

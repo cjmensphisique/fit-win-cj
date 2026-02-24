@@ -79,9 +79,20 @@ const metricSchema = new mongoose.Schema({
 });
 
 const goalSchema = new mongoose.Schema({
-  clientId: String, type: String, targetValue: String,
-  currentValue: String, targetDate: String, startDate: String,
-  status: String, notes: String,
+  clientId: String, 
+  title: String,
+  type: String, 
+  duration: Number,
+  targetValue: String,
+  currentValue: String, 
+  targetDate: String, 
+  startDate: String,
+  dailyTargets: [String],
+  monthlyTargets: [String],
+  checkins: [mongoose.Schema.Types.Mixed],
+  streak: { type: Number, default: 0 },
+  status: { type: String, default: 'active' },
+  notes: String,
   id: { type: String, unique: true }
 });
 

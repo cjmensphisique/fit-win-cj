@@ -2,22 +2,29 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://cj-fitness-backend.onrender.com/api/$1"
+      "src": "/api/(.*)",
+      "dest": "https://cj-fitness-backend.onrender.com/api/$1"
     },
     {
-      "source": "/robots.txt",
-      "destination": "/robots.txt"
+      "handle": "filesystem"
     },
     {
-      "source": "/sitemap.xml",
-      "destination": "/sitemap.xml"
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
     },
     {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/manifest.webmanifest",
+      "dest": "/manifest.webmanifest"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }

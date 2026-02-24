@@ -76,7 +76,7 @@ export default function Login() {
           {/* Stats */}
           <div className="flex gap-4">
             {[
-              { value: '50+', label: 'Clients' },
+              { value: '8+', label: 'Years Exp' },
               { value: '20+', label: 'Programs' },
               { value: '95%', label: 'Success Rate' },
             ].map((stat) => (
@@ -103,8 +103,8 @@ export default function Login() {
       <div className="flex w-full lg:w-1/2 flex-col items-center justify-center px-8 py-12" style={{ background: '#161616' }}>
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
-          <div className="flex lg:hidden items-center gap-3 mb-10 justify-center">
-            <div className="w-12 h-12 flex items-center justify-center">
+          <div className="flex flex-col lg:hidden items-center gap-3 mb-10 justify-center">
+            <div className="w-12 h-12 items-center justify-center">
               <img 
                 src={logoUrl} 
                 alt="CJ FITNESS Logo" 

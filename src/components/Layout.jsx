@@ -96,7 +96,7 @@ export default function Layout() {
 
   return (
     <div
-      className="flex min-h-screen"
+      className="flex h-[100dvh] overflow-hidden"
       style={{ background: '#111111', fontFamily: "'Inter', system-ui, sans-serif" }}
     >
       {/* CSS for toast animation */}

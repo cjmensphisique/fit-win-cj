@@ -231,7 +231,7 @@ export default function Dashboard() {
     };
 
     return (
-      <div className="gap-4 max-w-[1600px] mx-auto pb-0 h-[calc(100vh-64px)] flex flex-col min-h-0">
+      <div className="gap-4 max-w-[1600px] mx-auto pb-6 lg:pb-0 flex flex-col lg:h-[calc(100vh-64px)] lg:min-h-0">
         {/* Top Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 border-b border-[#222] pb-4 shrink-0">
           <div>
@@ -290,13 +290,13 @@ export default function Dashboard() {
         </div>
 
         {/* Main Content Area */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 lg:min-h-0">
           
           {/* Main 2-Column Section */}
-          <div className="lg:col-span-2 gap-4 flex flex-col min-h-0">
+          <div className="lg:col-span-2 gap-4 flex flex-col lg:min-h-0">
             
             {/* Revenue Widget */}
-            <DashboardCard title="Revenue Flow" subtitle="Financial Overview" icon={TrendingUp} variant="gradient" className="min-h-0">
+            <DashboardCard title="Revenue Flow" subtitle="Financial Overview" icon={TrendingUp} variant="gradient" className="min-h-[320px] lg:min-h-0">
                <div className="flex flex-col flex-1 min-h-0 justify-between gap-4 overflow-y-auto pr-2 pb-2">
                  <div>
                     <div className="flex items-end mb-1 gap-4">
@@ -338,7 +338,7 @@ export default function Dashboard() {
             </DashboardCard>
 
             {/* Admin Goal Assist Overview */}
-            <DashboardCard title="Goal Assist Overview" subtitle="Client Progress" icon={Target} className="flex-1 min-h-0">
+            <DashboardCard title="Goal Assist Overview" subtitle="Client Progress" icon={Target} className="flex-1 min-h-[320px] lg:min-h-0">
               <div className="flex flex-col flex-1 -mx-2 -mt-2 min-h-0">
                 <div className="flex-1 overflow-y-auto pr-2 space-y-3">
                    {(goals || []).filter(g => g.status === 'active').length > 0 ? (
@@ -387,9 +387,9 @@ export default function Dashboard() {
           </div>
 
           {/* Side Panel Section */}
-          <div className="lg:col-span-1 flex flex-col min-h-0">
+          <div className="lg:col-span-1 flex flex-col min-h-[400px] lg:min-h-0">
             {/* Activity Feed */}
-            <DashboardCard title="Live Activity" subtitle="Real-time Updates" icon={Activity} className="flex-1 min-h-0">
+            <DashboardCard title="Live Activity" subtitle="Real-time Updates" icon={Activity} className="flex-1 min-h-[400px] lg:min-h-0">
                <div className="flex flex-col flex-1 -mx-2 min-h-0">
                   <div className="flex-1 overflow-y-auto pr-2 space-y-1">
                     {feed.slice(0, 15).map((n, i) => (

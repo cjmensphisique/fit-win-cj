@@ -6,4 +6,4 @@ Disallow: /admin/
 Disallow: /client/
 Disallow: /api/
 
-Sitemap: https://cj-fitness.com/sitemap.xml
+Sitemap: https://cj-fitness.vercel.app/sitemap.xml

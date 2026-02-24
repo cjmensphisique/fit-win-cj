@@ -6,9 +6,13 @@ import cron from 'node-cron';
 import * as models from './db.js';
 import { sendReminderEmail, sendMondayCheckinEmail } from './emailService.js';
 
-dotenv.config({ path: '../.env' }); // Ensure it catches .env from parent folder if running inside server/ 
-// To be safe, try both paths
-if (!process.env.MONGODB_URI) dotenv.config();
+dotenv.config(); // Load from current working directory (usually root)
+dotenv.config({ path: './.env' }); 
+dotenv.config({ path: '../.env' }); 
+
+if (!process.env.MONGODB_URI) {
+  console.warn('⚠️ MONGODB_URI not found in environment. Check your .env file.');
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -45,7 +49,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // ─── DATA (legacy endpoint for Dashboard load) ──────────────────────────────
 app.get('/api/data', async (req, res) => {
   try {
-    const [clients, tasks, notifications, workoutPlans, exercises, mealPlans, messages, metrics, payments, goals, checkIns] = await Promise.all([
+    const [clients, tasks, notifications, workoutPlans, exercises, mealPlans, messages, metrics, payments, goals, checkIns, adminDoc] = await Promise.all([
       models.Client.find().select('-password'),
       models.Task.find(),
       models.Notification.find(),
@@ -56,11 +60,9 @@ app.get('/api/data', async (req, res) => {
       models.Metric.find(),
       models.Payment.find(),
       models.Goal.find(),
-      models.CheckIn.find()
+      models.CheckIn.find(),
+      models.Admin.findOne({ email: "chiranjeeviwyld5@gmail.com" }).select('-password')
     ]);
-    
-    // Fetch basic admin info (no password)
-    const adminDoc = await models.Admin.findOne({ email: "chiranjeeviwyld5@gmail.com" }).select('-password');
     
     res.json({
       admin: adminDoc || { email: "chiranjeeviwyld5@gmail.com", role: 'admin' },

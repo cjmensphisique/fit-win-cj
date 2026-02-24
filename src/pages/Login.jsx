@@ -19,7 +19,7 @@ export default function Login() {
     if (window.hideLoader) window.hideLoader();
   }, []);
 
-  if (isLoading || loading) {
+  if (isLoading) {
     return <LoadingScreen />;
   }
 
@@ -31,7 +31,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (loading || isSubmitting) return;
+    if (isSubmitting) return;
 
     setIsSubmitting(true);
     setError('');

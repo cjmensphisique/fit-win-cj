@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { useData } from './DataContext';
-import { API_URL } from '../api';
+import { api, API_URL } from '../api';
 
 const AuthContext = createContext();
 
@@ -11,11 +11,17 @@ export function AuthProvider({ children }) {
 
   // Load user from localStorage on mount (persistence across refreshes)
   useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    try {
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser && storedUser !== 'undefined') {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (err) {
+      console.error('Failed to parse stored user:', err);
+      localStorage.removeItem('currentUser');
+    } finally {
+      setIsLoading(false); // ALWAYS set to false to unblock rendering
     }
-    setIsLoading(false); // done checking — safe to render protected routes
   }, []);
 
   const login = useCallback(async (identifier, password) => {

@@ -89,6 +89,7 @@ export default function Login() {
             <span style={{ color: '#ffc105' }}>CJ</span>
             <span className="text-white"> FITNESS</span>
           </h1>
+          <h2 className="sr-only">Elite Personal Training and Fitness Tracking</h2>
 
           <p className="text-gray-400 text-lg leading-relaxed max-w-xs mb-12">
             Transform your body. Track your progress. Achieve greatness.

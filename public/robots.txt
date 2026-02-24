@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /forgot-password
+Disallow: /admin/
+Disallow: /client/
+Disallow: /api/
+
+Sitemap: https://cj-fitness.com/sitemap.xml

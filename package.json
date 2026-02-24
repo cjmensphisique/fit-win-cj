@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp public/robots.txt public/sitemap.xml public/hello.txt dist/",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "node --watch server/server.js",

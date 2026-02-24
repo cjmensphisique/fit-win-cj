@@ -127,7 +127,7 @@ export default function Reminders() {
                 <option value="" disabled className="text-zinc-500">Select a Client...</option>
                 {clients.map(c => (
                   <option key={c.id} value={c.id} className="bg-[#1a1a1a] text-white">
-                    {c.name || 'Unnamed Client'} {c.email ? `(${c.email})` : ''}
+                    {c.name || 'Unnamed Client'}
                   </option>
                 ))}
               </select>
@@ -135,12 +135,12 @@ export default function Reminders() {
 
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-zinc-400">Description</label>
-              <input 
-                type="text" 
+              <textarea 
                 value={description} 
                 onChange={e => setDescription(e.target.value)}
                 placeholder="e.g. Drink 1 gallon of water!"
-                className="w-full bg-[#111] border border-zinc-800 text-white rounded-xl p-3 focus:border-yellow-500 focus:outline-none transition-colors"
+                rows={3}
+                className="w-full bg-[#111] border border-zinc-800 text-white rounded-xl p-3 focus:border-yellow-500 focus:outline-none transition-colors resize-none"
                 required
               />
             </div>

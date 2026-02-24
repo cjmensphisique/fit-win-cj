@@ -8,7 +8,15 @@
       "destination": "https://cj-fitness-backend.onrender.com/api/$1"
     },
     {
-      "source": "/((?!api/|robots.txt|sitemap.xml|manifest.webmanifest).*)",
+      "source": "/robots.txt",
+      "destination": "/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap.xml"
+    },
+    {
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]

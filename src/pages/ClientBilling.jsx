@@ -3,6 +3,11 @@ import { useAuth } from '../context/AuthContext';
 import { CreditCard, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 
 import { API_URL as API } from '../api';
+import { Smartphone } from 'lucide-react';
+
+// Replace this with your actual UPI ID (VPA)
+const ADMIN_UPI_ID = "YOUR_UPI_ID_HERE@upi";
+const MERCHANT_NAME = "CJ FITNESS";
 
 const STATUS_CONFIG = {
   pending:  { label: 'Pending',  color: '#ffc105', bg: 'rgba(255,193,5,0.1)',   icon: Clock },
@@ -83,11 +88,29 @@ export default function ClientBilling() {
                   </p>
                   {p.notes && <p className="text-xs mt-1" style={{ color: '#ccc' }}>{p.notes}</p>}
                 </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <p className="text-xl font-black text-white">₹{parseFloat(p.amount).toLocaleString()}</p>
-                  <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold" style={{ background: sc.bg, color: sc.color }}>
-                    <StatusIcon className="w-3 h-3" />{sc.label}
-                  </span>
+                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3 shrink-0">
+                  <div className="text-right">
+                    <p className="text-xl font-black text-white">₹{parseFloat(p.amount).toLocaleString()}</p>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold mt-1" style={{ background: sc.bg, color: sc.color }}>
+                      <StatusIcon className="w-3 h-3" />{sc.label}
+                    </span>
+                  </div>
+                  
+                  {p.status === 'pending' && (
+                    <button 
+                      onClick={() => {
+                        const amount = parseFloat(p.amount).toFixed(2);
+                        const note = encodeURIComponent(`Invoice: ${p.description}`);
+                        const upiUrl = `upi://pay?pa=${ADMIN_UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&tn=${note}&cu=INR`;
+                        window.location.href = upiUrl;
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95"
+                      style={{ background: '#ffc105', color: '#111' }}
+                    >
+                      <Smartphone className="w-4 h-4" />
+                      Pay via GPay
+                    </button>
+                  )}
                 </div>
               </div>
             );

@@ -27,16 +27,31 @@ export default function Login() {
     return <Navigate to={user.role === 'admin' ? '/admin' : '/client'} replace />;
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (loading) return;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const success = login(identifier, password);
-    if (success) {
-      const user = JSON.parse(localStorage.getItem('currentUser'));
-      navigate(user.role === 'admin' ? '/admin' : '/client');
-    } else {
-      setError('Invalid credentials. Please try again.');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (loading || isSubmitting) return;
+
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const result = await login(identifier, password);
+      if (result.success) {
+        // Redirection handled by Navigate in the render if user state updates
+        // but adding local navigate for immediate response
+        const storedUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (storedUser) {
+          navigate(storedUser.role === 'admin' ? '/admin' : '/client');
+        }
+      } else {
+        setError(result.error === 'invalid' ? 'Invalid credentials. Please try again.' : result.error);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -202,18 +217,20 @@ export default function Login() {
             {/* Submit */}
             <button
               type="submit"
-              disabled={loading}
-              className="w-full py-3 rounded-lg font-bold text-base transition-all duration-200 mt-2"
+              disabled={isSubmitting}
+              className="w-full py-3.5 rounded-xl text-black font-black uppercase tracking-widest text-sm transition-all shadow-lg shadow-[#ffc105]/20 flex items-center justify-center gap-2"
               style={{
-                background: loading ? '#a07800' : '#ffc105',
-                color: '#111111',
-                fontFamily: 'inherit',
-                letterSpacing: '0.02em',
+                background: isSubmitting ? '#cc9a00' : '#ffc105',
+                opacity: isSubmitting ? 0.8 : 1,
+                cursor: isSubmitting ? 'not-allowed' : 'pointer'
               }}
-              onMouseEnter={(e) => { if (!loading) e.target.style.background = '#e6ad00'; }}
-              onMouseLeave={(e) => { if (!loading) e.target.style.background = '#ffc105'; }}
             >
-              {loading ? 'Loading...' : 'Sign In'}
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                  Signing in...
+                </>
+              ) : 'Sign In'}
             </button>
 
             {/* Forgot password */}

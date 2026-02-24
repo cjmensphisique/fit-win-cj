@@ -22,14 +22,31 @@ app.use(express.json({ limit: '50mb' }));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB Atlas'))
+  .then(async () => {
+    console.log('Connected to MongoDB Atlas');
+    // Seed default admin if missing
+    try {
+      const exists = await models.Admin.findOne({ email: "chiranjeeviwyld5@gmail.com" });
+      if (!exists) {
+        await models.Admin.create({
+          name: "CJ Fitness",
+          email: "chiranjeeviwyld5@gmail.com",
+          password: "Cjfitness@55", // In a real production app, we would hash this
+          role: "admin"
+        });
+        console.log('Default admin seeded to database');
+      }
+    } catch (err) {
+      console.error('Failed to seed admin:', err);
+    }
+  })
   .catch(err => console.error('MongoDB connection error:', err));
 
 // ─── DATA (legacy endpoint for Dashboard load) ──────────────────────────────
 app.get('/api/data', async (req, res) => {
   try {
     const [clients, tasks, notifications, workoutPlans, exercises, mealPlans, messages, metrics, payments, goals, checkIns] = await Promise.all([
-      models.Client.find(),
+      models.Client.find().select('-password'),
       models.Task.find(),
       models.Notification.find(),
       models.WorkoutPlan.find(),
@@ -42,8 +59,11 @@ app.get('/api/data', async (req, res) => {
       models.CheckIn.find()
     ]);
     
+    // Fetch basic admin info (no password)
+    const adminDoc = await models.Admin.findOne({ email: "chiranjeeviwyld5@gmail.com" }).select('-password');
+    
     res.json({
-      admin: { email: "chiranjeeviwyld5@gmail.com", password: "Cjfitness@55" },
+      admin: adminDoc || { email: "chiranjeeviwyld5@gmail.com", role: 'admin' },
       clients, tasks, notifications, workoutPlans, exercises, mealPlans, messages, metrics, payments, goals, checkIns
     });
   } catch (error) {
@@ -53,6 +73,37 @@ app.get('/api/data', async (req, res) => {
 
 app.post('/api/save', async (req, res) => {
   res.json({ success: true });
+});
+
+// ─── AUTHENTICATION ──────────────────────────────────────────────────────────
+
+app.post('/api/login', async (req, res) => {
+  const { identifier, password } = req.body;
+  
+  try {
+    // 1. Try Admin check
+    let user = await models.Admin.findOne({ 
+      $or: [{ email: identifier }, { phone: identifier }] 
+    });
+    
+    // 2. Try Client check if not admin
+    if (!user) {
+      user = await models.Client.findOne({ 
+        $or: [{ email: identifier }, { phone: identifier }] 
+      });
+    }
+    
+    if (user && user.password === password) {
+      // Success: Return user without password
+      const userData = user.toObject();
+      delete userData.password;
+      return res.json({ success: true, user: userData });
+    }
+    
+    res.status(401).json({ error: 'Invalid email/phone or password' });
+  } catch (error) {
+    res.status(500).json({ error: 'Authentication failed' });
+  }
 });
 
 // ─── CLIENTS ─────────────────────────────────────────────────────────────────

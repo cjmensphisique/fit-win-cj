@@ -10,6 +10,15 @@ const patch = (url, body) =>
 const del = (url) => fetch(url, { method: 'DELETE' });
 
 export const api = {
+  async login(identifier, password) {
+    const r = await post(`${API_BASE}/login`, { identifier, password });
+    if (!r.ok) {
+      const error = await r.json();
+      throw new Error(error.error || 'Authentication failed');
+    }
+    return r.json();
+  },
+
   async getData() {
     const r = await fetch(`${API_BASE}/data`);
     if (!r.ok) throw new Error('Failed to fetch data');

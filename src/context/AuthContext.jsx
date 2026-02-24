@@ -18,31 +18,21 @@ export function AuthProvider({ children }) {
     setIsLoading(false); // done checking — safe to render protected routes
   }, []);
 
-  const login = useCallback((identifier, password) => {
-    // Admin Check
-    if (data.admin && 
-       (data.admin.email === identifier || data.admin.phone === identifier) && 
-        data.admin.password === password) {
-      const adminUser = { role: 'admin', ...data.admin };
-      setUser(adminUser);
-      localStorage.setItem('currentUser', JSON.stringify(adminUser));
-      return true;
+  const login = useCallback(async (identifier, password) => {
+    try {
+      const response = await api.login(identifier, password);
+      if (response.success) {
+        const loggedInUser = response.user;
+        setUser(loggedInUser);
+        localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
+        return { success: true };
+      }
+      return { success: false, error: 'invalid' };
+    } catch (err) {
+      console.error('Login error:', err);
+      return { success: false, error: err.message };
     }
-
-    // Client Check
-    const client = data.clients.find(c => 
-      (c.email === identifier || c.phone === identifier) && c.password === password
-    );
-
-    if (client) {
-      const clientUser = { role: 'client', ...client };
-      setUser(clientUser);
-      localStorage.setItem('currentUser', JSON.stringify(clientUser));
-      return true;
-    }
-
-    return false;
-  }, [data]);
+  }, []);
 
   const logout = useCallback(() => {
     setUser(null);

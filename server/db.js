@@ -1,5 +1,13 @@
 import mongoose from 'mongoose';
 
+const adminSchema = new mongoose.Schema({
+  name: { type: String, default: 'CJ Fitness' },
+  email: { type: String, unique: true },
+  phone: { type: String },
+  password: { type: String },
+  role: { type: String, default: 'admin' }
+}, { timestamps: true });
+
 const clientSchema = new mongoose.Schema({
   name: String, email: String, phone: String, password: String,
   weight: String, height: String, age: String, address: String,
@@ -96,6 +104,7 @@ const goalSchema = new mongoose.Schema({
   id: { type: String, unique: true }
 });
 
+export const Admin = mongoose.model('Admin', adminSchema);
 export const Client = mongoose.model('Client', clientSchema);
 export const Task = mongoose.model('Task', taskSchema);
 export const Notification = mongoose.model('Notification', notificationSchema);

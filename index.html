@@ -67,15 +67,19 @@
     <script type="module" src="/src/main.jsx"></script>
     
     <script>
-      // Remove the splash screen smoothly once the main app is ready
-      // This will be called from inside main.jsx or when window loads
-      window.onload = function() {
+      // Global function to hide the loader with a smooth transition
+      window.hideLoader = function() {
         const loader = document.getElementById('global-loader');
-        if (loader) {
+        if (loader && loader.style.opacity !== '0') {
           loader.style.opacity = '0';
-          setTimeout(() => loader.remove(), 500);
+          setTimeout(() => {
+            if (loader.parentNode) loader.remove();
+          }, 600);
         }
-      }
+      };
+
+      // Fallback for unexpected failures: 10 second timeout safety
+      setTimeout(window.hideLoader, 10000);
     </script>
   </body>
 </html>

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
+import LoadingScreen from '../components/LoadingScreen';
 import logoUrl from '../assets/logo.jpeg';
 
 export default function Login() {
@@ -13,8 +14,13 @@ export default function Login() {
   const { loading } = useData();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Hide native splash screen when login page is mounted
+    if (window.hideLoader) window.hideLoader();
+  }, []);
+
   if (isLoading || loading) {
-    return <div className="flex min-h-screen bg-[#111111]"></div>;
+    return <LoadingScreen />;
   }
 
   if (user) {

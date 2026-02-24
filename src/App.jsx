@@ -29,13 +29,14 @@ const Messages = lazy(() => import('./pages/Messages'));
 const Reminders = lazy(() => import('./pages/admin/Reminders'));
 
 import InstallPrompt from './components/InstallPrompt';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
   return (
     <DataProvider>
       <AuthProvider>
         <BrowserRouter>
-          <Suspense fallback={<div className="flex h-screen w-screen items-center justify-center bg-[#141414] text-[#ffc105]">Loading...</div>}>
+          <Suspense fallback={<LoadingScreen />}>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -55,6 +55,11 @@ export default function Layout() {
   const [toasts, setToasts] = useState([]);
   const prevCountRef = useRef(null);
 
+  useEffect(() => {
+    // Hide native splash screen when layout is mounted
+    if (window.hideLoader) window.hideLoader();
+  }, []);
+
   const shownIdsRef = useRef(new Set());
 
   // Track new unread notifications and show toasts

@@ -1,12 +1,13 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import LoadingScreen from './LoadingScreen';
 
 export default function ProtectedRoute({ role }) {
   const { user, isLoading } = useAuth();
 
   // Wait until localStorage has been checked before making any redirect decision
   if (isLoading) {
-    return null;
+    return <LoadingScreen />;
   }
 
   if (!user) {

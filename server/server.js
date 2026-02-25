@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cron from 'node-cron';
+import bcrypt from 'bcrypt';
 import * as models from './db.js';
 import { sendReminderEmail, sendMondayCheckinEmail } from './emailService.js';
 
@@ -32,14 +33,37 @@ mongoose.connect(process.env.MONGODB_URI)
     try {
       const exists = await models.Admin.findOne({ email: "chiranjeeviwyld5@gmail.com" });
       if (!exists) {
+        const hashedPassword = await bcrypt.hash("Cjfitness@55", 10);
         await models.Admin.create({
           name: "CJ Fitness",
           email: "chiranjeeviwyld5@gmail.com",
-          password: "Cjfitness@55", // In a real production app, we would hash this
+          password: hashedPassword,
           role: "admin"
         });
         console.log('Default admin seeded to database');
       }
+      
+      // Migration: Hash existing plain text passwords
+      const migratePasswords = async () => {
+        const admins = await models.Admin.find();
+        for (const admin of admins) {
+          if (!admin.password.startsWith('$2b$')) {
+            admin.password = await bcrypt.hash(admin.password, 10);
+            await admin.save();
+            console.log(`Hashed password for admin: ${admin.email}`);
+          }
+        }
+        
+        const clients = await models.Client.find();
+        for (const client of clients) {
+          if (client.password && !client.password.startsWith('$2b$')) {
+            client.password = await bcrypt.hash(client.password, 10);
+            await client.save();
+            console.log(`Hashed password for client: ${client.email}`);
+          }
+        }
+      };
+      await migratePasswords();
     } catch (err) {
       console.error('Failed to seed admin:', err);
     }
@@ -95,11 +119,18 @@ app.post('/api/login', async (req, res) => {
       });
     }
     
-    if (user && user.password === password) {
-      // Success: Return user without password
-      const userData = user.toObject();
-      delete userData.password;
-      return res.json({ success: true, user: userData });
+    if (user) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
+        // Success: Return user without password
+        const userData = user.toObject();
+        delete userData.password;
+        // Ensure role is present for clients (to handle legacy data)
+        if (!userData.role && identifier !== "chiranjeeviwyld5@gmail.com") {
+          userData.role = 'client';
+        }
+        return res.json({ success: true, user: userData });
+      }
     }
     
     res.status(401).json({ error: 'Invalid email/phone or password' });
@@ -108,12 +139,58 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+app.post('/api/auth/verify-identity', async (req, res) => {
+  const { email } = req.body;
+  try {
+    let user = await models.Admin.findOne({ email });
+    if (!user) {
+      user = await models.Client.findOne({ email });
+    }
+    
+    if (user) {
+      return res.json({ success: true, message: 'Identity found' });
+    }
+    res.status(404).json({ error: 'User with this email not found' });
+  } catch (error) {
+    res.status(500).json({ error: 'Verification failed' });
+  }
+});
+
+app.post('/api/auth/reset-password', async (req, res) => {
+  const { email, phone, newPassword } = req.body;
+  try {
+    let user = await models.Admin.findOne({ email });
+    
+    if (!user) {
+      user = await models.Client.findOne({ email });
+    }
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    // Check if phone matches (basic equality check for the demo)
+    if (user.phone !== phone) {
+      return res.status(401).json({ error: 'Phone number does not match our records' });
+    }
+    
+    // Update password (hashed)
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    
+    res.json({ success: true, message: 'Password updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Password reset failed' });
+  }
+});
+
 // ─── CLIENTS ─────────────────────────────────────────────────────────────────
 
 app.post('/api/clients', async (req, res) => {
   try {
+    const hashedPassword = await bcrypt.hash(req.body.password || 'Welcome@123', 10);
     const referralCode = 'CJFIT-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-    const newClient = new models.Client({ ...req.body, id: Date.now().toString(), referralCode });
+    const newClient = new models.Client({ ...req.body, password: hashedPassword, id: Date.now().toString(), referralCode });
     await newClient.save();
     res.json(newClient);
   } catch (error) { res.status(500).json({ error: 'Failed to create client' }); }

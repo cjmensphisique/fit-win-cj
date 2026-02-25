@@ -123,4 +123,23 @@ export const api = {
     if (!r.ok) throw new Error('Failed to update check-in');
     return r.json();
   },
+
+  // Auth
+  async verifyIdentity(email) {
+    const r = await post(`${API_BASE}/auth/verify-identity`, { email });
+    if (!r.ok) {
+      const error = await r.json();
+      throw new Error(error.error || 'User not found');
+    }
+    return r.json();
+  },
+
+  async resetPassword(email, phone, newPassword) {
+    const r = await post(`${API_BASE}/auth/reset-password`, { email, phone, newPassword });
+    if (!r.ok) {
+      const error = await r.json();
+      throw new Error(error.error || 'Reset failed');
+    }
+    return r.json();
+  },
 };

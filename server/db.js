@@ -10,6 +10,7 @@ const adminSchema = new mongoose.Schema({
 
 const clientSchema = new mongoose.Schema({
   name: String, email: String, phone: String, password: String,
+  role: { type: String, default: 'client' },
   weight: String, height: String, age: String, address: String,
   goal: String, joinedDate: String,
   photos: [{ id: String, data: String, date: String }],

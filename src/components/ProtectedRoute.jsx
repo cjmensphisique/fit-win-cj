@@ -14,9 +14,10 @@ export default function ProtectedRoute({ role }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (role && user.role !== role) {
+  const userRole = user.role || 'client';
+  if (role && userRole !== role) {
     // Redirect based on role if they try to access wrong portal
-    return <Navigate to={user.role === 'admin' ? '/admin' : '/client'} replace />;
+    return <Navigate to={userRole === 'admin' ? '/admin' : '/client'} replace />;
   }
 
   return <Outlet />;

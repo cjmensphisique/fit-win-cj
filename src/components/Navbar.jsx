@@ -102,7 +102,7 @@ export default function Navbar() {
                 </button>
                 <Link
                   to="/login"
-                  className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                  className="md:text-gray-400 md:hover:text-white text-sm font-medium transition-colors bg-yellow-400 text-black px-6 py-2 rounded-full md:bg-transparent md:px-0 md:py-0 md:rounded-none md:font-medium font-bold"
                 >
                   Member Login
                 </Link>

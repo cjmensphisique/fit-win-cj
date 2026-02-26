@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { DataProvider } from './context/DataContext';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -27,6 +27,7 @@ const AdminCheckIns = lazy(() => import('./pages/admin/AdminCheckIns'));
 const Analytics = lazy(() => import('./pages/admin/Analytics'));
 const Messages = lazy(() => import('./pages/Messages'));
 const Reminders = lazy(() => import('./pages/admin/Reminders'));
+const Home = lazy(() => import('./pages/Home'));
 
 import InstallPrompt from './components/InstallPrompt';
 import LoadingScreen from './components/LoadingScreen';
@@ -38,6 +39,7 @@ function App() {
         <BrowserRouter>
           <Suspense fallback={<LoadingScreen />}>
             <Routes>
+              <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               
@@ -78,7 +80,7 @@ function App() {
                 </Route>
               </Route>
 
-              <Route path="*" element={<Navigate to="/login" replace />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
           <InstallPrompt />

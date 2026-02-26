@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-scroll">
   <head>
     <meta charset="UTF-8" />
     <meta name="v" content="2026-02-24-v7" />
@@ -83,10 +83,13 @@
         margin: 0;
         padding: 0;
         background-color: #141414; /* True dark background to prevent white flash */
+        -webkit-tap-highlight-color: transparent;
+      }
+      
+      .no-scroll {
         height: 100vh;
         width: 100vw;
-        overflow: hidden;
-        -webkit-tap-highlight-color: transparent;
+        overflow: hidden !important;
       }
       
       #global-loader {
@@ -122,7 +125,7 @@
       }
     </style>
   </head>
-  <body>
+  <body class="no-scroll">
     <!-- Splash Screen that shows immediately before JS downloads -->
     <div id="global-loader">
       <div class="loader-logo">
@@ -139,6 +142,10 @@
         const loader = document.getElementById('global-loader');
         if (loader && loader.style.opacity !== '0') {
           loader.style.opacity = '0';
+          // Restore scrolling by removing the no-scroll class
+          document.documentElement.classList.remove('no-scroll');
+          document.body.classList.remove('no-scroll');
+          
           setTimeout(() => {
             if (loader.parentNode) loader.remove();
           }, 600);

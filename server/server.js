@@ -25,50 +25,83 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '50mb' }));
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(async () => {
-    console.log('Connected to MongoDB Atlas');
-    // Seed default admin if missing
-    try {
-      const exists = await models.Admin.findOne({ email: "chiranjeeviwyld5@gmail.com" });
-      if (!exists) {
-        const hashedPassword = await bcrypt.hash("Cjfitness@55", 10);
-        await models.Admin.create({
-          name: "CJ Fitness",
-          email: "chiranjeeviwyld5@gmail.com",
-          password: hashedPassword,
-          role: "admin"
-        });
-        console.log('Default admin seeded to database');
-      }
-      
-      // Migration: Hash existing plain text passwords
-      const migratePasswords = async () => {
-        const admins = await models.Admin.find();
-        for (const admin of admins) {
-          if (!admin.password.startsWith('$2b$')) {
-            admin.password = await bcrypt.hash(admin.password, 10);
-            await admin.save();
-            console.log(`Hashed password for admin: ${admin.email}`);
-          }
-        }
-        
-        const clients = await models.Client.find();
-        for (const client of clients) {
-          if (client.password && !client.password.startsWith('$2b$')) {
-            client.password = await bcrypt.hash(client.password, 10);
-            await client.save();
-            console.log(`Hashed password for client: ${client.email}`);
-          }
-        }
-      };
-      await migratePasswords();
-    } catch (err) {
-      console.error('Failed to seed admin:', err);
+// Connect to MongoDB with robust handling
+const connectDB = async (retryCount = 0) => {
+  const maxRetries = 5;
+  const retryInterval = 5000; // 5 seconds
+
+  try {
+    console.log(`Connecting to MongoDB Atlas (Attempt ${retryCount + 1})...`);
+    await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000, // Wait 10 seconds for server selection
+      socketTimeoutMS: 45000,         // Close sockets after 45 seconds of inactivity
+    });
+  } catch (err) {
+    console.error(`MongoDB connection attempt ${retryCount + 1} failed:`, err.message);
+    
+    if (retryCount < maxRetries) {
+      console.log(`Retrying in ${retryInterval / 1000} seconds...`);
+      setTimeout(() => connectDB(retryCount + 1), retryInterval);
+    } else {
+      console.error('Max retries reached. Could not connect to MongoDB Atlas.');
+      process.exit(1);
     }
-  })
-  .catch(err => console.error('MongoDB connection error:', err));
+  }
+};
+
+// Connection Event Listeners
+mongoose.connection.on('connected', () => {
+  console.log('✅ Connected to MongoDB Atlas');
+  seedAdminAndMigrate();
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.warn('⚠️ MongoDB disconnected. Mongoose will automatically try to reconnect.');
+});
+
+// Seed default admin if missing and run migrations
+async function seedAdminAndMigrate() {
+  try {
+    const exists = await models.Admin.findOne({ email: "chiranjeeviwyld5@gmail.com" });
+    if (!exists) {
+      const hashedPassword = await bcrypt.hash("Cjfitness@55", 10);
+      await models.Admin.create({
+        name: "CJ Fitness",
+        email: "chiranjeeviwyld5@gmail.com",
+        password: hashedPassword,
+        role: "admin"
+      });
+      console.log('Default admin seeded to database');
+    }
+    
+    // Migration: Hash existing plain text passwords
+    const admins = await models.Admin.find();
+    for (const admin of admins) {
+      if (!admin.password.startsWith('$2b$')) {
+        admin.password = await bcrypt.hash(admin.password, 10);
+        await admin.save();
+        console.log(`Hashed password for admin: ${admin.email}`);
+      }
+    }
+    
+    const clients = await models.Client.find();
+    for (const client of clients) {
+      if (client.password && !client.password.startsWith('$2b$')) {
+        client.password = await bcrypt.hash(client.password, 10);
+        await client.save();
+        console.log(`Hashed password for client: ${client.email}`);
+      }
+    }
+  } catch (err) {
+    console.error('Failed during seed/migration:', err);
+  }
+}
+
+connectDB();
 
 // ─── DATA (legacy endpoint for Dashboard load) ──────────────────────────────
 app.get('/api/data', async (req, res) => {

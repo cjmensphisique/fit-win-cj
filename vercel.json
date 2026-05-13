@@ -9,18 +9,6 @@
       "destination": "https://cj-fitness-backend.onrender.com/api/$1"
     },
     {
-      "source": "/robots.txt",
-      "destination": "/robots.txt"
-    },
-    {
-      "source": "/sitemap.xml",
-      "destination": "/sitemap.xml"
-    },
-    {
-      "source": "/hello.txt",
-      "destination": "/hello.txt"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

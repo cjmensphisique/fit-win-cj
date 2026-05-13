@@ -92,13 +92,13 @@ function Sidebar({ onClose }) {
           console.log('Sidebar unreadCount calculated:', unreadCount, 'for receiverId:', receiverId);
           setUnreadMessages(unreadCount);
         })
-        .catch(() => {});
+        .catch(() => { });
     };
 
     fetchAll();
     const timer = setInterval(fetchAll, 5000);
     window.addEventListener('messages-read', fetchAll);
-    
+
     return () => {
       clearInterval(timer);
       window.removeEventListener('messages-read', fetchAll);
@@ -117,30 +117,30 @@ function Sidebar({ onClose }) {
   }, []);
 
   const adminNav = [
-    { name: 'Dashboard',       path: '/admin',                   icon: LayoutDashboard },
-    { name: 'Analytics',       path: '/admin/analytics',         icon: TrendingUp },
-    { name: 'Clients',         path: '/admin/clients',           icon: Users },
-    { name: 'Reminders',       path: '/admin/reminders',         icon: AlarmClock },
-    { name: 'Workout Plans',   path: '/admin/workout-plans',     icon: Dumbbell },
-    { name: 'Exercise Library',path: '/admin/exercise-library',  icon: BookOpen },
-    { name: 'Meal Plans',      path: '/admin/meal-plans',        icon: Apple },
-    { name: 'Weekly Check-Ins',path: '/admin/check-ins',         icon: Activity },
-    { name: 'Billing',         path: '/admin/billing',           icon: CreditCard },
-    { name: 'Messages',        path: '/admin/messages',          icon: MessageSquare },
-    { name: 'BMR Calculator',  path: '/admin/bmr-calculator',    icon: Calculator },
+    { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+    { name: 'Analytics', path: '/admin/analytics', icon: TrendingUp },
+    { name: 'Clients', path: '/admin/clients', icon: Users },
+    { name: 'Reminders', path: '/admin/reminders', icon: AlarmClock },
+    { name: 'Workout Plans', path: '/admin/workout-plans', icon: Dumbbell },
+    { name: 'Exercise Library', path: '/admin/exercise-library', icon: BookOpen },
+    { name: 'Meal Plans', path: '/admin/meal-plans', icon: Apple },
+    { name: 'Weekly Check-Ins', path: '/admin/check-ins', icon: Activity },
+    { name: 'Billing', path: '/admin/billing', icon: CreditCard },
+    { name: 'Messages', path: '/admin/messages', icon: MessageSquare },
+    { name: 'BMR Calculator', path: '/admin/bmr-calculator', icon: Calculator },
   ];
 
   const clientNav = [
-    { name: 'Dashboard',       path: '/client',                  icon: LayoutDashboard },
-    { name: 'My Workout',      path: '/client/workout-plan',     icon: Dumbbell },
-    { name: 'Exercise Library',path: '/client/exercise-library', icon: BookOpen },
-    { name: 'Meal Plan',       path: '/client/meal-plan',        icon: Apple },
-    { name: 'Body Metrics',    path: '/client/metrics',          icon: Scale },
-    { name: 'Weekly Check-In', path: '/client/check-ins',        icon: Activity },
-    { name: 'Goal Assist',     path: '/client/goal-assist',      icon: Target },
-    { name: 'Billing',         path: '/client/billing',          icon: CreditCard },
-    { name: 'Messages',        path: '/client/messages',         icon: MessageSquare },
-    { name: 'BMR Calculator',  path: '/client/bmr-calculator',   icon: Calculator },
+    { name: 'Dashboard', path: '/client', icon: LayoutDashboard },
+    { name: 'My Workout', path: '/client/workout-plan', icon: Dumbbell },
+    { name: 'Exercise Library', path: '/client/exercise-library', icon: BookOpen },
+    { name: 'Meal Plan', path: '/client/meal-plan', icon: Apple },
+    { name: 'Body Metrics', path: '/client/metrics', icon: Scale },
+    { name: 'Weekly Check-In', path: '/client/check-ins', icon: Activity },
+    { name: 'Goal Assist', path: '/client/goal-assist', icon: Target },
+    { name: 'Billing', path: '/client/billing', icon: CreditCard },
+    { name: 'Messages', path: '/client/messages', icon: MessageSquare },
+    { name: 'BMR Calculator', path: '/client/bmr-calculator', icon: Calculator },
   ];
 
   const navItems = isAdmin ? adminNav : clientNav;
@@ -186,17 +186,20 @@ function Sidebar({ onClose }) {
       {/* Logo */}
       <div className="flex items-center justify-between px-5 pt-6 pb-5 shrink-0">
         <Link to={prefix} onClick={onClose} className="flex items-center gap-3 flex-1 min-w-0 pr-3">
-          <img 
-            src={logoUrl} 
-            alt="CJ FITNESS Logo" 
-            className="w-12 h-12 object-cover rounded-xl shadow-lg border border-yellow-500/30" 
+          <img
+            src={logoUrl}
+            alt="CJ FITNESS GEEK Logo"
+            className="w-12 h-12 object-cover rounded-xl shadow-lg border border-yellow-500/30"
           />
           <div className="flex-1 min-w-0">
-            <div className="truncate">
-              <span className="text-[18px] font-black tracking-tight" style={{ color: '#ffc105' }}>CJ</span>
-              <span className="text-[18px] font-black tracking-tight text-white"> FITNESS</span>
+            <div className="flex items-center gap-2 leading-none">
+              <span className="text-[28px] font-black tracking-tighter" style={{ color: '#ffc105' }}>CJ</span>
+              <div className="flex flex-col">
+                <span className="text-[13px] font-black tracking-tight text-white text-left">FITNESS</span>
+                <span className="text-[13px] font-black tracking-tight text-white/80 text-left">GEEK</span>
+              </div>
             </div>
-            <p className="text-[10px] font-semibold uppercase tracking-widest mt-0.5 truncate" style={{ color: '#bbb' }}>
+            <p className="text-[9px] font-bold uppercase tracking-[0.2em] mt-1" style={{ color: '#777' }}>
               {isAdmin ? 'Admin Portal' : 'Client Portal'}
             </p>
           </div>
@@ -293,7 +296,7 @@ function Sidebar({ onClose }) {
         {navItems.map(item => {
           const active = isActive(item.path);
           const isMessages = item.name === 'Messages';
-          
+
           return (
             <Link
               key={item.path}
@@ -309,10 +312,10 @@ function Sidebar({ onClose }) {
             >
               <item.icon className="w-4 h-4 shrink-0" />
               <span className="text-sm font-semibold">{item.name}</span>
-              
+
               {isMessages && unreadMessages > 0 ? (
-                <div className="ml-auto flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full text-[10px] font-black" 
-                     style={{ background: '#f87171', color: '#111', boxShadow: '0 0 10px rgba(248,113,113,0.4)' }}>
+                <div className="ml-auto flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full text-[10px] font-black"
+                  style={{ background: '#f87171', color: '#111', boxShadow: '0 0 10px rgba(248,113,113,0.4)' }}>
                   {unreadMessages}
                 </div>
               ) : active && !isMessages ? (

@@ -41,12 +41,16 @@ export default function Navbar() {
             <Link to={prefix} className="flex-shrink-0 flex items-center space-x-3">
               <img 
                 src={logo} 
-                alt="CJ Fitness Logo" 
+                alt="CJ Fitness Geek Logo" 
                 className="w-10 h-10 rounded-lg object-cover border border-gray-700 shadow-lg"
               />
-              <span className="text-2xl font-bold transform skew-x-[-10deg]">
-                <span style={{ color: '#ffc105' }}>CJ</span> <span className="text-white">FITNESS</span>
-              </span>
+              <div className="flex items-center gap-2 leading-none">
+                <span className="text-[28px] font-black tracking-tighter" style={{ color: '#ffc105' }}>CJ</span>
+                <div className="flex flex-col">
+                  <span className="text-[12px] font-black tracking-tight text-white">FITNESS</span>
+                  <span className="text-[12px] font-black tracking-tight text-white/70">GEEK</span>
+                </div>
+              </div>
             </Link>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">

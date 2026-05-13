@@ -30,7 +30,7 @@ const LoadingScreen = () => {
       `}</style>
       <div className="loader-logo-react">
         <span style={{ color: '#ffc105' }}>CJ</span>
-        <span style={{ color: '#fff' }}>FITNESS</span>
+        <span style={{ color: '#fff' }}>FITNESS GEEK</span>
       </div>
     </div>
   );

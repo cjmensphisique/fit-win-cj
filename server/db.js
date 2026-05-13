@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const adminSchema = new mongoose.Schema({
-  name: { type: String, default: 'CJ Fitness' },
+  name: { type: String, default: 'CJ Fitness Geek' },
   email: { type: String, unique: true },
   phone: { type: String },
   password: { type: String },

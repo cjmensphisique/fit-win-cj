@@ -70,7 +70,7 @@ async function seedAdminAndMigrate() {
     if (!exists) {
       const hashedPassword = await bcrypt.hash("Cjfitness@55", 10);
       await models.Admin.create({
-        name: "CJ Fitness",
+        name: "CJ Fitness Geek",
         email: "chiranjeeviwyld5@gmail.com",
         password: hashedPassword,
         role: "admin"

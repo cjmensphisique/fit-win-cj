@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, LazyMotion, domAnimation, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import './Home.css';
 import transformation1 from '../assets/images/transformation_1.png';
@@ -14,10 +14,10 @@ const Home = () => {
 
     useEffect(() => {
         // SEO: Set page-specific title and description
-        document.title = "CJ FITNESS | Elite Bodyweight Mastery & Aesthetics";
+        document.title = "CJ FITNESS GEEK | Elite Bodyweight Mastery & Aesthetics";
         const metaDesc = document.querySelector('meta[name="description"]');
         if (metaDesc) {
-            metaDesc.setAttribute('content', 'Master your physique with CJ Fitness. Zero equipment, high-octane bodyweight training protocols for elite aesthetics and functional power.');
+            metaDesc.setAttribute('content', 'Master your physique with CJ Fitness Geek. Zero equipment, high-octane bodyweight training protocols for elite aesthetics and functional power.');
         }
 
         if (window.hideLoader) {
@@ -47,8 +47,9 @@ const Home = () => {
     };
 
     return (
-        <div className="home-container">
-            <Navbar />
+        <LazyMotion features={domAnimation}>
+            <div className="home-container">
+                <Navbar />
             
             {/* Hero Section */}
             <section className="hero">
@@ -140,7 +141,7 @@ const Home = () => {
                         variants={fadeIn}
                     >
                         <div className="trans-img-wrapper">
-                            <img src={transformation1} alt="Before and after transformation showing muscle definition and physique improvement via bodyweight training" />
+                            <img src={transformation1} width="640" height="640" alt="Before and after transformation showing muscle definition and physique improvement via bodyweight training" />
                             <div className="trans-badge">12 WEEKS</div>
                         </div>
                         <div className="trans-content">
@@ -180,7 +181,7 @@ const Home = () => {
                         variants={fadeIn}
                     >
                         <div className="img-frame">
-                            <img src={bodyweightMastery} alt="Athlete performing a perfect handstand on handles, demonstrating elite bodyweight control" />
+                            <img src={bodyweightMastery} width="640" height="640" alt="Athlete performing a perfect handstand on handles, demonstrating elite bodyweight control" />
                         </div>
                     </motion.div>
                 </div>
@@ -278,9 +279,10 @@ const Home = () => {
 
             {/* Footer */}
             <footer className="footer">
-                <p>&copy; {new Date().getFullYear()} CJ FITNESS. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} CJ FITNESS GEEK. All rights reserved.</p>
             </footer>
         </div>
+        </LazyMotion>
     );
 };
 

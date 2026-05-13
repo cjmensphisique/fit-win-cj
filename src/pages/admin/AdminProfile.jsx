@@ -26,7 +26,7 @@ export default function AdminProfile() {
             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#ffc105] to-[#f59e0b] mx-auto flex items-center justify-center text-[#111] text-3xl font-black shadow-[0_0_30px_rgba(255,193,5,0.2)] mb-4">
               {user?.name?.[0]?.toUpperCase() || 'C'}
             </div>
-            <h2 className="text-xl font-bold text-white mb-1">{user?.name || 'CJ Fitness'}</h2>
+            <h2 className="text-xl font-bold text-white mb-1">{user?.name || 'CJ Fitness Geek'}</h2>
             <p className="text-xs uppercase tracking-widest text-[#ffc105] font-bold mb-4">{user?.role || 'Admin'}</p>
             <p className="text-[#888] text-sm">{user?.email || 'No email attached'}</p>
           </div>
@@ -51,7 +51,7 @@ export default function AdminProfile() {
              <div className="space-y-4">
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-[#888] mb-1.5 font-bold">Full Name</label>
-                  <input type="text" readOnly value={user?.name || 'CJ Fitness'} className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded-xl opacity-70 cursor-not-allowed" />
+                  <input type="text" readOnly value={user?.name || 'CJ Fitness Geek'} className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded-xl opacity-70 cursor-not-allowed" />
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-[#888] mb-1.5 font-bold">Email Address</label>
@@ -59,7 +59,7 @@ export default function AdminProfile() {
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-[#888] mb-1.5 font-bold">Business Name</label>
-                  <input type="text" readOnly value="CJ FITNESS" className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded-xl opacity-70 cursor-not-allowed" />
+                  <input type="text" readOnly value="CJ FITNESS GEEK" className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded-xl opacity-70 cursor-not-allowed" />
                 </div>
                 
                 <div className="pt-4 border-t border-[#333] mt-6">

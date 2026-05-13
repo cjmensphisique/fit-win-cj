@@ -15,6 +15,8 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // SEO: Set page-specific title
+    document.title = "Login | CJ Fitness Geek - Elite Coaching";
     // Hide native splash screen when login page is mounted
     if (window.hideLoader) window.hideLoader();
   }, []);
@@ -79,15 +81,18 @@ export default function Login() {
           <div className="w-24 h-24 flex items-center justify-center mb-6">
             <img 
               src={logoUrl} 
-              alt="CJ FITNESS Logo" 
+              alt="CJ Fitness Geek Logo" 
               className="w-full h-full object-cover rounded-2xl shadow-2xl border-2 border-[#ffc105]/30" 
             />
           </div>
 
           {/* Brand Name */}
-          <h1 className="text-5xl font-black tracking-wide mb-4 leading-tight">
-            <span style={{ color: '#ffc105' }}>CJ</span>
-            <span className="text-white"> FITNESS</span>
+          <h1 className="flex items-center justify-center gap-3 leading-none mb-6">
+            <span className="text-7xl md:text-8xl font-black tracking-tighter" style={{ color: '#ffc105' }}>CJ</span>
+            <div className="flex flex-col items-start">
+              <span className="text-2xl md:text-3xl font-black tracking-tight text-white">FITNESS</span>
+              <span className="text-2xl md:text-3xl font-black tracking-tight text-[#ffc105]">GEEK</span>
+            </div>
           </h1>
           <h2 className="sr-only">Elite Personal Training and Fitness Tracking</h2>
 
@@ -129,13 +134,13 @@ export default function Login() {
             <div className="w-12 h-12 items-center justify-center">
               <img 
                 src={logoUrl} 
-                alt="CJ FITNESS Logo" 
+                alt="CJ Fitness Geek Logo" 
                 className="w-full h-full object-cover rounded-xl shadow-lg border border-[#ffc105]/30" 
               />
             </div>
             <span className="text-xl font-black">
               <span style={{ color: '#ffc105' }}>CJ</span>
-              <span className="text-white"> FITNESS</span>
+              <span className="text-white"> FITNESS GEEK</span>
             </span>
           </div>
 

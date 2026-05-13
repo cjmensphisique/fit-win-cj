@@ -1,9 +1,9 @@
-# CJ Fitness - Comprehensive Project Overview
+# CJ Fitness Geek - Comprehensive Project Overview
 
-This document provides a detailed overview of the technical architecture, features, and technology stack used in the CJ Fitness web application.
+This document provides a detailed overview of the technical architecture, features, and technology stack used in the CJ Fitness Geek web application.
 
 ## 1. Executive Summary
-**CJ Fitness** is a full-stack web application designed for personal trainers and their clients. It streamlines the process of managing workout plans, meal plans, client progress tracking, and communication. The system features a dedicated Admin dashboard for the coach and a personalized interface for clients.
+**CJ Fitness Geek** is a full-stack web application designed for personal trainers and their clients. It streamlines the process of managing workout plans, meal plans, client progress tracking, and communication. The system features a dedicated Admin dashboard for the coach and a personalized interface for clients.
 
 ---
 
@@ -78,4 +78,4 @@ The application is designed for scalability and modern deployment workflows:
 
 ---
 
-*Prepared by Antigravity AI for CJ Fitness.*
+*Prepared by Antigravity AI for CJ Fitness Geek.*

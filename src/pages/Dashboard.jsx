@@ -132,6 +132,11 @@ export default function Dashboard() {
   const go = (path) => navigate(path);
 
   useEffect(() => {
+    // SEO: Set page-specific title
+    document.title = isAdmin 
+      ? "Admin Dashboard | CJ Fitness Geek" 
+      : "My Fitness Hub | CJ Fitness Geek";
+
     const targetId = isAdmin ? 'admin' : user?.id;
     if (targetId) loadNotifications(targetId);
     
@@ -148,7 +153,7 @@ export default function Dashboard() {
     fetchExtra();
     const timer = setInterval(fetchExtra, 5000);
     return () => clearInterval(timer);
-  }, [user?.id]);
+  }, [user?.id, isAdmin]);
 
   // Derived Data
   const clients = data?.clients || [];
@@ -552,7 +557,7 @@ export default function Dashboard() {
                  <span className="text-[#111] font-black text-lg tracking-tighter">CJ</span>
                </div>
                <div className="flex-1 min-w-0 pt-1">
-                 <p className="text-[10px] font-black uppercase tracking-wider text-[#ffc105] mb-1">CJ Fitness Coach</p>
+                 <p className="text-[10px] font-black uppercase tracking-wider text-[#ffc105] mb-1">CJ Fitness Geek Coach</p>
                  <p className="text-sm font-medium text-white/90 leading-snug line-clamp-2 italic">"{latestMessage}"</p>
                </div>
                {unreadMsgs > 0 && (

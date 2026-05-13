@@ -21,7 +21,7 @@ const wrapHtmlEmail = (title, content) => `
   <div style="font-family: 'Inter', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #141414; color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #333;">
     <div style="background-color: #ffc105; padding: 20px; text-align: center;">
       <h1 style="color: #111111; margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -1px;">
-        CJ<span style="color: #ffffff; margin-left: 4px;">FITNESS</span>
+        CJ<span style="color: #ffffff; margin-left: 4px;">FITNESS GEEK</span>
       </h1>
     </div>
     <div style="padding: 30px;">
@@ -31,9 +31,9 @@ const wrapHtmlEmail = (title, content) => `
       </div>
     </div>
     <div style="padding: 20px; text-align: center; border-top: 1px solid #333; background-color: #1a1a1a; font-size: 12px; color: #888888;">
-      This is an automated message from CJ Fitness. Please do not reply to this email.
+      This is an automated message from CJ Fitness Geek. Please do not reply to this email.
       <br/><br/>
-      <a href="https://cj-fitness-app.vercel.app/" style="color: #ffc105; text-decoration: none; font-weight: bold;">Open Client Portal</a>
+      <a href="https://cj-fitness-geek.vercel.app/" style="color: #ffc105; text-decoration: none; font-weight: bold;">Open Client Portal</a>
     </div>
   </div>
 `;
@@ -57,9 +57,9 @@ export const sendReminderEmail = async (clientEmail, clientName, description) =>
 
   try {
     await transporter.sendMail({
-      from: `"CJ Fitness" <${process.env.EMAIL_USER}>`,
+      from: `"CJ Fitness Geek" <${process.env.EMAIL_USER}>`,
       to: clientEmail,
-      subject: "🚨 New Reminder - CJ Fitness",
+      subject: "🚨 New Reminder - CJ Fitness Geek",
       html: htmlContent,
     });
     console.log(`Email sent to ${clientEmail} for reminder.`);
@@ -80,7 +80,7 @@ export const sendMondayCheckinEmail = async (clientEmail, clientName) => {
      <p>It's time for your weekly check-in. Tracking your progress is the best way to ensure you hit your goals this week.</p>
      <p>Please log in to your portal and submit your updated measurements, weight, and photos.</p>
      <div style="text-align: center; margin: 30px 0;">
-       <a href="https://cj-fitness-app.vercel.app/client/check-ins" style="background-color: #ffc105; color: #111; padding: 14px 28px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block;">
+       <a href="https://cj-fitness-geek.vercel.app/client/check-ins" style="background-color: #ffc105; color: #111; padding: 14px 28px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block;">
          Submit Check-in
        </a>
      </div>
@@ -90,7 +90,7 @@ export const sendMondayCheckinEmail = async (clientEmail, clientName) => {
 
   try {
     await transporter.sendMail({
-      from: `"CJ Fitness" <${process.env.EMAIL_USER}>`,
+      from: `"CJ Fitness Geek" <${process.env.EMAIL_USER}>`,
       to: clientEmail,
       subject: "✅ Action Required: Weekly Check-in",
       html: htmlContent,

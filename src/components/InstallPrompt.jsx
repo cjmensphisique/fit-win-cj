@@ -72,7 +72,7 @@ export default function InstallPrompt() {
         </div>
 
         <div className="flex-1">
-          <h3 className="text-white font-bold text-sm mb-1">Install CJ Fitness</h3>
+          <h3 className="text-white font-bold text-sm mb-1">Install CJ Fitness Geek</h3>
           
           {showIOSPrompt ? (
             <p className="text-xs text-[#aaa] leading-relaxed">

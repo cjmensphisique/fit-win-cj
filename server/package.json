@@ -2,7 +2,7 @@
   "name": "cj-fitness-backend",
   "version": "1.0.0",
   "type": "module",
-  "description": "Backend server for CJ Fitness App",
+  "description": "Backend server for CJ Fitness Geek App",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

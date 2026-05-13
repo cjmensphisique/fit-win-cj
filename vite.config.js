@@ -13,8 +13,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'CJ Fitness App',
-        short_name: 'CJ Fitness',
+        name: 'CJ Fitness Geek App',
+        short_name: 'CJ Fitness Geek',
         description: 'Elite personal training and fitness tracking',
         theme_color: '#141414',
         background_color: '#141414',

@@ -7,7 +7,7 @@ import { Smartphone } from 'lucide-react';
 
 // Replace this with your actual UPI ID (VPA)
 const ADMIN_UPI_ID = "YOUR_UPI_ID_HERE@upi";
-const MERCHANT_NAME = "CJ FITNESS";
+const MERCHANT_NAME = "CJ FITNESS GEEK";
 
 const STATUS_CONFIG = {
   pending:  { label: 'Pending',  color: '#ffc105', bg: 'rgba(255,193,5,0.1)',   icon: Clock },

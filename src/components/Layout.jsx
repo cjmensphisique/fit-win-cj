@@ -160,7 +160,7 @@ export default function Layout() {
           </button>
           <span className="text-base font-black">
             <span style={{ color: '#ffc105' }}>CJ</span>
-            <span className="text-white"> FITNESS</span>
+            <span className="text-white"> FITNESS GEEK</span>
           </span>
         </div>
 

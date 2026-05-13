@@ -52,7 +52,7 @@ const Home = () => {
                 <Navbar />
 
                 {/* Hero Section */}
-                <section className="hero">
+                <section className="hero ">
                     <div className="hero-overlay"></div>
                     <div className="hero-bg" style={{ backgroundImage: `url(${heroBg})` }}></div>
                     <motion.div
@@ -62,11 +62,11 @@ const Home = () => {
                         viewport={{ once: true }}
                         variants={fadeIn}
                     >
-                        <h1>Elite Aesthetics.<br />Zero Equipment.</h1>
-                        <p>
+                        <h1>Elite Aesthetics.<br />Zero Weights.</h1>
+                        <p className=''>
                             The ultimate blueprint for building a powerful, shredded physique using nothing but your own bodyweight. No gym memberships. No cluttered machines. Just results.
                         </p>
-                        <div className="cta-group">
+                        <div className="cta-group ">
                             <button className="btn-primary" onClick={handleJoinClick}>
                                 Start Your Transformation
                             </button>

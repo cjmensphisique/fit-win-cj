@@ -114,7 +114,7 @@ const Home = () => {
                         <motion.div className="phi-card" variants={fadeIn}>
                             <i className="fas fa-chart-line"></i>
                             <h3>Data-Driven Growth</h3>
-                            <p>Track your progress with precision. Our portal provides the metrics you need to stay on top of your game.</p>
+                            <p>Track your progress with our App. Our App provides all metrics you need to stay on top of your game Consistently.</p>
                         </motion.div>
                     </motion.div>
                 </section>
@@ -142,7 +142,7 @@ const Home = () => {
                         >
                             <div className="trans-img-wrapper">
                                 <img src={transformation1} width="640" height="640" alt="Before and after transformation showing muscle definition and physique improvement via bodyweight training" />
-                                <div className="trans-badge">12 WEEKS</div>
+                                <div className="trans-badge">16 WEEKS</div>
                             </div>
                             <div className="trans-content">
                                 <h3>Muscle Hypertrophy Phase</h3>
@@ -240,7 +240,7 @@ const Home = () => {
 
                     <div className="faq-container">
                         {[
-                            { q: "Do I really need zero equipment?", a: "Yes. Our protocols focus on bodyweight mastery. While a pull-up bar is helpful, we provide alternatives for every movement." },
+                            { q: "Do I really need zero weights?", a: "Yes. Our protocols focus on bodyweight mastery. While a pull-up bar is helpful, we provide alternatives for every movement." },
                             { q: "How long until I see results?", a: "Most clients see significant changes in muscle definition and strength within the first 4-6 weeks of consistent training." },
                             { q: "Is this suitable for beginners?", a: "Absolutely. We scale every exercise to your current level, from absolute beginner to elite athlete." }
                         ].map((item, index) => (

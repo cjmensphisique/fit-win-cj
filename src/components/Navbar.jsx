@@ -1,9 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { 
-  LayoutDashboard, 
-  Users, 
-  LogOut 
+import {
+  LayoutDashboard,
+  Users,
+  LogOut
 } from 'lucide-react';
 import logo from '../assets/logo.jpeg';
 
@@ -15,9 +15,9 @@ export default function Navbar() {
   const isLandingPage = location.pathname === '/';
   const isAdmin = user?.role === 'admin';
   const prefix = isAdmin ? '/admin' : '/client';
-  
+
   const WHATSAPP_NUMBER = "8667600388";
-  const WHATSAPP_LINK = `https://wa.me/91${WHATSAPP_NUMBER}?text=Hey!%20I'm%20interested%20in%20joining%20CJ%20Fitness!`;
+  const WHATSAPP_LINK = `https://wa.me/91${WHATSAPP_NUMBER}?text=Hey!%20I'm%20interested%20in%20joining%20CJ%20Fitness%20Geek!`;
 
   const navItems = user ? [
     { name: 'Dashboard', path: prefix, icon: LayoutDashboard },
@@ -27,10 +27,10 @@ export default function Navbar() {
   ] : [];
 
   const isActive = (path) => {
-      // Check if current path matches or is a sub-path
-      if (path === prefix && location.pathname === prefix) return true;
-      if (path !== prefix && location.pathname.startsWith(path)) return true;
-      return false;
+    // Check if current path matches or is a sub-path
+    if (path === prefix && location.pathname === prefix) return true;
+    if (path !== prefix && location.pathname.startsWith(path)) return true;
+    return false;
   };
 
   return (
@@ -39,9 +39,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link to={prefix} className="flex-shrink-0 flex items-center space-x-3">
-              <img 
-                src={logo} 
-                alt="CJ Fitness Geek Logo" 
+              <img
+                src={logo}
+                alt="CJ Fitness Geek Logo"
                 className="w-10 h-10 rounded-lg object-cover border border-gray-700 shadow-lg"
               />
               <div className="flex items-center gap-2 leading-none">
@@ -58,11 +58,10 @@ export default function Navbar() {
                   <Link
                     key={item.name}
                     to={item.path}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      isActive(item.path)
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive(item.path)
                         ? 'bg-yellow-400 text-black'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                    }`}
+                      }`}
                   >
                     <item.icon className="w-4 h-4" />
                     <span>{item.name}</span>

@@ -31,6 +31,7 @@ export function AuthProvider({ children }) {
         const loggedInUser = response.user;
         setUser(loggedInUser);
         localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
+        sessionStorage.removeItem('dismissedPwaPrompt');
         return { success: true };
       }
       return { success: false, error: 'invalid' };
@@ -43,6 +44,7 @@ export function AuthProvider({ children }) {
   const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('dismissedPwaPrompt');
   }, []);
 
   // Poll server to check if current client has been deleted

@@ -25,7 +25,7 @@ const Home = () => {
         }
     }, []);
     const WHATSAPP_NUMBER = "8667600388";
-    const WHATSAPP_LINK = `https://wa.me/91${WHATSAPP_NUMBER}?text=Hey!%20I'm%20interested%20in%20building%20an%20aesthetic%20physique%20with%20zero%20equipment.%20Can%20you%20help%20me?`;
+    const WHATSAPP_LINK = `https://wa.me/91${WHATSAPP_NUMBER}?text=Hey%20CJ!%20I'm%20interested%20in%20building%20an%20aesthetic%20physique%20with%20zero%20weights.%20Can%20you%20help%20me?`;
 
     const handleJoinClick = () => {
         window.open(WHATSAPP_LINK, '_blank');
@@ -282,7 +282,7 @@ const Home = () => {
                     <div className="footer-content">
                         <div className="footer-brand">
                             <h4><span>CJ</span><span> FITNESS GEEK</span></h4>
-                            <p>Master your physique with elite, zero-equipment bodyweight training protocols. Designed for functional strength, flexibility, and premium aesthetics.</p>
+                            <p>Master your physique with elite, zero-weights bodyweight training protocols. Designed for functional strength, flexibility, and premium aesthetics.</p>
                         </div>
                         <div className="footer-links">
                             <h5>Navigation</h5>

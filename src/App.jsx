@@ -30,7 +30,6 @@ const Reminders = lazy(() => import('./pages/admin/Reminders'));
 const ClientActivity = lazy(() => import('./pages/admin/ClientActivity'));
 const Home = lazy(() => import('./pages/Home'));
 
-import InstallPrompt from './components/InstallPrompt';
 import LoadingScreen from './components/LoadingScreen';
 import ErrorBoundary from './components/ErrorBoundary';
 import NetworkStatus from './components/NetworkStatus';
@@ -88,7 +87,6 @@ function App() {
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>
-            <InstallPrompt />
             <NetworkStatus />
           </BrowserRouter>
         </AuthProvider>

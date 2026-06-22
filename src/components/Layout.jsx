@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Sidebar, { notifRoute } from './Sidebar';
-import { Menu, Bell, X, ChevronRight } from 'lucide-react';
+import { Menu, Bell, X, ChevronRight, Download, Share } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../api';
@@ -58,6 +58,78 @@ export default function Layout() {
 
   const location = useLocation();
   const activeSessionIdRef = useRef(sessionStorage.getItem('activeActivityId'));
+
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isInstallable, setIsInstallable] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showIOSModal, setShowIOSModal] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
+
+  useEffect(() => {
+    // Load dismissal state
+    const dismissed = sessionStorage.getItem('dismissedPwaPrompt') === 'true';
+    setIsDismissed(dismissed);
+
+    // Check if standalone mode
+    const isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandaloneMode) return;
+
+    // Check if iOS
+    const ios = /ipad|iphone|ipod/.test(navigator.userAgent.toLowerCase()) && !window.MSStream;
+    setIsIOS(ios);
+
+    // Check if prompt was already captured globally
+    if (window.deferredPrompt) {
+      setIsInstallable(true);
+    }
+
+    // Listen to beforeinstallprompt event
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      window.deferredPrompt = e;
+      setIsInstallable(true);
+    };
+
+    // Listen to custom global PWA event
+    const handleCustomPromptReady = () => {
+      setIsInstallable(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('pwa-deferred-prompt-ready', handleCustomPromptReady);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('pwa-deferred-prompt-ready', handleCustomPromptReady);
+    };
+  }, []);
+
+  const dismissPrompt = () => {
+    setIsDismissed(true);
+    sessionStorage.setItem('dismissedPwaPrompt', 'true');
+  };
+
+  const handleInstallClick = async () => {
+    if (isIOS) {
+      setShowIOSModal(true);
+      return;
+    }
+
+    const promptObj = deferredPrompt || window.deferredPrompt;
+    if (promptObj) {
+      promptObj.prompt();
+      const { outcome } = await promptObj.userChoice;
+      if (outcome === 'accepted') {
+        setIsInstallable(false);
+        dismissPrompt();
+      }
+      setDeferredPrompt(null);
+      window.deferredPrompt = null;
+    }
+  };
+
+  const showInstallButton = isInstallable || (isIOS && !(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone));
 
   // 1. Session tracking effect
   useEffect(() => {
@@ -194,8 +266,8 @@ export default function Layout() {
         }
       `}</style>
 
-      {/* Toast stack — bottom right */}
-      <div className="fixed bottom-6 right-4 z-[100] flex flex-col gap-2 items-end pointer-events-none">
+      {/* Toast stack — bottom right (moved up to avoid overlap with sticky install button) */}
+      <div className="fixed bottom-20 right-4 z-[100] flex flex-col gap-2 items-end pointer-events-none">
         {toasts.map(t => (
           <div key={t.toastId} className="pointer-events-auto">
             <NotifToast
@@ -250,6 +322,89 @@ export default function Layout() {
           <Outlet />
         </div>
       </main>
+
+      {/* Sticky Install App Floating Popup Card */}
+      {showInstallButton && !isDismissed && (
+        <div className="fixed bottom-6 right-6 z-40 animate-in slide-in-from-bottom-5 fade-in duration-300">
+          <div className="bg-[#1f1f1f] border border-[#ffc105]/30 shadow-[0_8px_32px_rgba(0,0,0,0.8)] rounded-2xl p-4 pr-10 flex flex-col gap-2 max-w-[280px] relative">
+            <button
+              onClick={dismissPrompt}
+              className="absolute top-2 right-2 p-1.5 text-gray-500 hover:text-white transition-colors"
+              title="Dismiss"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-[#ffc105]/10 flex items-center justify-center shrink-0">
+                <Download className="w-4.5 h-4.5 text-[#ffc105]" />
+              </div>
+              <div className="min-w-0">
+                <h4 className="text-white font-bold text-xs">Install App</h4>
+                <p className="text-[10px] text-gray-400">Get offline access & fullscreen dashboard.</p>
+              </div>
+            </div>
+            <button
+              onClick={handleInstallClick}
+              className="mt-1.5 w-full py-2 bg-[#ffc105] hover:bg-[#eab308] text-black text-[11px] font-black uppercase tracking-wider rounded-lg transition-colors text-center"
+            >
+              Install Now
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* iOS Safari PWA installation modal */}
+      {showIOSModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-[#1a1a1a] border border-[#ffc105]/30 rounded-3xl p-6 max-w-sm w-full relative shadow-[0_20px_50px_rgba(0,0,0,0.9)] animate-in fade-in zoom-in-95 duration-200">
+            <button
+              onClick={() => setShowIOSModal(false)}
+              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            
+            <div className="flex flex-col items-center text-center mt-2">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ffc105] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-[#ffc105]/20 mb-4">
+                <Download className="w-8 h-8 text-black" />
+              </div>
+              
+              <h3 className="text-white font-black text-lg mb-2">Install CJ Fitness Geek</h3>
+              <p className="text-xs text-gray-400 leading-relaxed mb-6">
+                To install this app on your iPhone or iPad, please follow these steps in Safari:
+              </p>
+              
+              <div className="space-y-4 w-full text-left bg-black/30 p-4 rounded-2xl border border-gray-800">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#ffc105]/10 text-[#ffc105] flex items-center justify-center text-xs font-bold shrink-0">1</div>
+                  <p className="text-xs text-gray-300">
+                    Tap the <span className="inline-flex items-center bg-gray-800 px-2 py-0.5 rounded text-white mx-0.5"><Share className="w-3.5 h-3.5" /> Share</span> button at the bottom of Safari.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#ffc105]/10 text-[#ffc105] flex items-center justify-center text-xs font-bold shrink-0">2</div>
+                  <p className="text-xs text-gray-300">
+                    Scroll down and tap <span className="font-bold text-white">"Add to Home Screen"</span>.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#ffc105]/10 text-[#ffc105] flex items-center justify-center text-xs font-bold shrink-0">3</div>
+                  <p className="text-xs text-gray-300">
+                    Tap <span className="font-bold text-white">"Add"</span> in the top right corner.
+                  </p>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => setShowIOSModal(false)}
+                className="mt-6 w-full py-3 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-2xl transition-colors text-xs uppercase tracking-wider"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

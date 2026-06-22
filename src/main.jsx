@@ -4,6 +4,13 @@ import App from './App.jsx'
 import './index.css'
 import { registerSW } from 'virtual:pwa-register'
 
+// Global handler to catch beforeinstallprompt event before layout mounts
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  window.deferredPrompt = e;
+  window.dispatchEvent(new CustomEvent('pwa-deferred-prompt-ready'));
+});
+
 // Register the PWA service worker
 const updateSW = registerSW({
   onNeedRefresh() {

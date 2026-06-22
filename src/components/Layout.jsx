@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Sidebar, { notifRoute } from './Sidebar';
 import { Menu, Bell, X, ChevronRight } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../api';
 
 // ── Toast alert for new notifications ────────────────────────────────────────
 function NotifToast({ notif, onClose, onClick }) {
@@ -54,6 +55,87 @@ export default function Layout() {
   const navigate = useNavigate();
   const [toasts, setToasts] = useState([]);
   const prevCountRef = useRef(null);
+
+  const location = useLocation();
+  const activeSessionIdRef = useRef(sessionStorage.getItem('activeActivityId'));
+
+  // 1. Session tracking effect
+  useEffect(() => {
+    if (!user || user.role !== 'client') return;
+
+    const startSession = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/activity/start`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientId: user.id,
+            clientName: user.name || user.email || 'Client'
+          })
+        });
+        if (res.ok) {
+          const result = await res.json();
+          if (result.activityId) {
+            activeSessionIdRef.current = result.activityId;
+            sessionStorage.setItem('activeActivityId', result.activityId);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to start PWA activity tracking:', err);
+      }
+    };
+
+    if (!activeSessionIdRef.current) {
+      startSession();
+    }
+  }, [user]);
+
+  // 2. Heartbeat & Page Navigation effect
+  useEffect(() => {
+    if (!user || user.role !== 'client' || !activeSessionIdRef.current) return;
+
+    const sendHeartbeat = async (pagePath) => {
+      try {
+        await fetch(`${API_URL}/api/activity/heartbeat`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            activityId: activeSessionIdRef.current,
+            page: pagePath
+          })
+        });
+      } catch (err) {
+        // Silent error
+      }
+    };
+
+    sendHeartbeat(location.pathname);
+
+    const intervalId = setInterval(() => {
+      sendHeartbeat(location.pathname);
+    }, 30000);
+
+    return () => clearInterval(intervalId);
+  }, [user, location.pathname]);
+
+  // 3. Tab close / Unload session termination effect
+  useEffect(() => {
+    const handleUnload = () => {
+      if (activeSessionIdRef.current) {
+        const url = `${API_URL}/api/activity/end`;
+        const headers = { type: 'application/json' };
+        const blob = new Blob([JSON.stringify({ activityId: activeSessionIdRef.current })], headers);
+        navigator.sendBeacon(url, blob);
+        
+        sessionStorage.removeItem('activeActivityId');
+      }
+    };
+
+    window.addEventListener('beforeunload', handleUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, []);
 
   useEffect(() => {
     // Hide native splash screen when layout is mounted

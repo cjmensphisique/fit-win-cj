@@ -253,8 +253,21 @@ app.patch('/api/clients/:id', async (req, res) => {
 });
 
 app.delete('/api/clients/:id', async (req, res) => {
+  const clientId = req.params.id;
   try {
-    await models.Client.deleteOne({ id: req.params.id });
+    await Promise.all([
+      models.Client.deleteOne({ id: clientId }),
+      models.Task.deleteMany({ clientId }),
+      models.Notification.deleteMany({ userId: clientId }),
+      models.Reminder.deleteMany({ clientId }),
+      models.WorkoutPlan.deleteMany({ clientId }),
+      models.MealPlan.deleteMany({ clientId }),
+      models.Message.deleteMany({ $or: [{ senderId: clientId }, { receiverId: clientId }] }),
+      models.Metric.deleteMany({ clientId }),
+      models.Goal.deleteMany({ clientId }),
+      models.CheckIn.deleteMany({ clientId }),
+      models.ClientActivity.deleteMany({ clientId })
+    ]);
     res.json({ success: true });
   } catch (error) { res.status(500).json({ error: 'Failed to delete client' }); }
 });
@@ -698,6 +711,113 @@ cron.schedule('* * * * *', async () => {
   }
 });
 
+// ─── CLIENT ACTIVITY TRACKER ──────────────────────────────────────────────────
+app.post('/api/activity/start', async (req, res) => {
+  const { clientId, clientName } = req.body;
+  const userAgent = req.headers['user-agent'] || 'Unknown';
+  let platform = 'Web';
+  if (/mobile/i.test(userAgent)) platform = 'Mobile';
+  if (/tablet/i.test(userAgent)) platform = 'Tablet';
+  
+  try {
+    const activityId = 'act-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6);
+    const newActivity = new models.ClientActivity({
+      id: activityId,
+      clientId,
+      clientName,
+      date: new Date().toISOString().split('T')[0],
+      startTime: new Date().toISOString(),
+      endTime: new Date().toISOString(),
+      durationMinutes: 0,
+      pagesVisited: ['/client'],
+      platform,
+      isActive: true
+    });
+    await newActivity.save();
+    res.json({ success: true, activityId });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to start activity tracking' });
+  }
+});
+
+app.patch('/api/activity/heartbeat', async (req, res) => {
+  const { activityId, page } = req.body;
+  try {
+    const activity = await models.ClientActivity.findOne({ id: activityId });
+    if (!activity) return res.status(404).json({ error: 'Activity not found' });
+    
+    if (page && (activity.pagesVisited.length === 0 || activity.pagesVisited[activity.pagesVisited.length - 1] !== page)) {
+      activity.pagesVisited.push(page);
+    }
+    
+    activity.endTime = new Date().toISOString();
+    const start = new Date(activity.startTime);
+    const end = new Date(activity.endTime);
+    activity.durationMinutes = Math.max(1, Math.round((end - start) / (1000 * 60)));
+    activity.isActive = true;
+    
+    await activity.save();
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to record heartbeat' });
+  }
+});
+
+app.patch('/api/activity/end', async (req, res) => {
+  const { activityId } = req.body;
+  try {
+    const activity = await models.ClientActivity.findOne({ id: activityId });
+    if (!activity) return res.status(404).json({ error: 'Activity not found' });
+    
+    activity.endTime = new Date().toISOString();
+    const start = new Date(activity.startTime);
+    const end = new Date(activity.endTime);
+    activity.durationMinutes = Math.max(1, Math.round((end - start) / (1000 * 60)));
+    activity.isActive = false;
+    
+    await activity.save();
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to end activity tracking' });
+  }
+});
+
+app.get('/api/activity/logs', async (req, res) => {
+  try {
+    // Auto-expire sessions with no heartbeat for more than 4 minutes
+    const threshold = new Date(Date.now() - 4 * 60 * 1000);
+    await models.ClientActivity.updateMany(
+      { isActive: true, updatedAt: { $lt: threshold } },
+      { isActive: false }
+    );
+
+    const logs = await models.ClientActivity.find().sort({ createdAt: -1 }).limit(20);
+    res.json(logs);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch activity logs' });
+  }
+});
+
+// ─── GLOBAL ERROR HANDLING MIDDLEWARE ──────────────────────────────────────────
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, _next) => {
+  console.error('🔥 Express Global Error:', err.stack || err);
+  res.status(500).json({
+    error: 'An unexpected server error occurred',
+    details: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running with MongoDB Atlas on http://localhost:${PORT}`);
 });
+
+// ─── PROCESS ERROR HANDLERS ────────────────────────────────────────────────────
+process.on('uncaughtException', (error) => {
+  console.error('🔥 CRITICAL UNCAUGHT EXCEPTION:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🔥 UNHANDLED PROMISE REJECTION at:', promise, 'reason:', reason);
+});
+

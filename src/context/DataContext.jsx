@@ -253,11 +253,29 @@ export function DataProvider({ children }) {
           const badges = client.badges || [];
           const newBadges = [];
           
+          // 1. Check-In Milestone Badges
           if (myCheckIns.length === 1 && !badges.find(b => b.id === 'first-checkin')) {
             newBadges.push({ id: 'first-checkin', title: 'First Step', icon: 'Star', dateAwarded: new Date().toISOString() });
           }
           if (myCheckIns.length === 5 && !badges.find(b => b.id === 'five-checkins')) {
             newBadges.push({ id: 'five-checkins', title: 'Consistency King', icon: 'Flame', dateAwarded: new Date().toISOString() });
+          }
+          if (myCheckIns.length === 10 && !badges.find(b => b.id === 'ten-checkins')) {
+            newBadges.push({ id: 'ten-checkins', title: 'Fitness Veteran', icon: 'Trophy', dateAwarded: new Date().toISOString() });
+          }
+
+          // 2. Wellbeing & Consistency Badges
+          if (Number(payload.sleepQuality) >= 8 && !badges.find(b => b.id === 'sleep-master')) {
+            newBadges.push({ id: 'sleep-master', title: 'Sleep Master', icon: 'Moon', dateAwarded: new Date().toISOString() });
+          }
+          if (Number(payload.energyLevel) >= 8 && !badges.find(b => b.id === 'energy-booster')) {
+            newBadges.push({ id: 'energy-booster', title: 'Energy Booster', icon: 'Flame', dateAwarded: new Date().toISOString() });
+          }
+
+          // 3. Referral Badges
+          const referralsCount = data.clients.filter(c => c.referredBy && client.referralCode && c.referredBy.toUpperCase() === client.referralCode.toUpperCase()).length;
+          if (referralsCount >= 1 && !badges.find(b => b.id === 'referral-champion')) {
+            newBadges.push({ id: 'referral-champion', title: 'Referral Champion', icon: 'Users', dateAwarded: new Date().toISOString() });
           }
 
           if (newBadges.length > 0) {
@@ -265,6 +283,11 @@ export function DataProvider({ children }) {
             newBadges.forEach(b => {
               addNotification({ userId: client.id, message: `🏆 You earned a new badge: ${b.title}!`, type: 'success', icon: 'metrics' });
             });
+            
+            // Dynamic import of canvas-confetti on badge achievement
+            import('canvas-confetti').then((confetti) => {
+              confetti.default({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            }).catch(() => {});
           }
         }
         

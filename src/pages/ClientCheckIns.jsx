@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
 import { Activity, Camera, CheckCircle, ChevronRight, Moon, Send, Star, User, History } from 'lucide-react';
+import confetti from 'canvas-confetti';
+
 
 export default function ClientCheckIns() {
   const { user } = useAuth();
@@ -37,6 +39,12 @@ export default function ClientCheckIns() {
       });
       setSubmitting(false);
       setSuccess(true);
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#ffc105', '#ffffff', '#e6ad00']
+      });
       setTimeout(() => {
         setSuccess(false);
         setView('history');

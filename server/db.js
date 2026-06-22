@@ -13,7 +13,7 @@ const clientSchema = new mongoose.Schema({
   role: { type: String, default: 'client' },
   weight: String, height: String, age: String, address: String,
   goal: String, joinedDate: String,
-  photos: [{ id: String, data: String, date: String }],
+  photos: [{ id: String, dataUrl: String, label: String, date: String }],
   referralCode: { type: String, unique: true, sparse: true },
   referredBy: String,
   id: { type: String, unique: true } // keeping original ID for migration
@@ -105,6 +105,19 @@ const goalSchema = new mongoose.Schema({
   id: { type: String, unique: true }
 });
 
+const clientActivitySchema = new mongoose.Schema({
+  clientId: String,
+  clientName: String,
+  date: String,
+  startTime: String,
+  endTime: String,
+  durationMinutes: Number,
+  pagesVisited: [String],
+  platform: String,
+  isActive: { type: Boolean, default: true },
+  id: { type: String, unique: true }
+}, { timestamps: true });
+
 export const Admin = mongoose.model('Admin', adminSchema);
 export const Client = mongoose.model('Client', clientSchema);
 export const Task = mongoose.model('Task', taskSchema);
@@ -118,3 +131,5 @@ export const Payment = mongoose.model('Payment', paymentSchema);
 export const CheckIn = mongoose.model('CheckIn', checkInSchema);
 export const Metric = mongoose.model('Metric', metricSchema);
 export const Goal = mongoose.model('Goal', goalSchema);
+export const ClientActivity = mongoose.model('ClientActivity', clientActivitySchema);
+

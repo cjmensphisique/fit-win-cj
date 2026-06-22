@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Users,
   LogOut, BookOpen, Apple, Scale, CreditCard,
   MessageSquare, Dumbbell, Calculator, Bell, Target, Check, X,
-  ChevronRight, Activity, TrendingUp, AlarmClock
+  ChevronRight, Activity, TrendingUp, AlarmClock, History
 } from 'lucide-react';
 
 // Map notification icons to route destinations (client-side)
@@ -41,6 +41,8 @@ function Sidebar({ onClose }) {
 
   const [unreadMessages, setUnreadMessages] = useState(0);
   const prevUnreadRef = useRef(0);
+
+
 
   // Play a chime sound using Web Audio API
   const playNotificationSound = () => {
@@ -120,6 +122,7 @@ function Sidebar({ onClose }) {
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
     { name: 'Analytics', path: '/admin/analytics', icon: TrendingUp },
     { name: 'Clients', path: '/admin/clients', icon: Users },
+    { name: 'Activity Logs', path: '/admin/activity-logs', icon: History },
     { name: 'Reminders', path: '/admin/reminders', icon: AlarmClock },
     { name: 'Workout Plans', path: '/admin/workout-plans', icon: Dumbbell },
     { name: 'Exercise Library', path: '/admin/exercise-library', icon: BookOpen },

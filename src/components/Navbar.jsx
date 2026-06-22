@@ -12,7 +12,6 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isLandingPage = location.pathname === '/';
   const isAdmin = user?.role === 'admin';
   const prefix = isAdmin ? '/admin' : '/client';
 

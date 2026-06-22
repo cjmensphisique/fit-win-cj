@@ -5,7 +5,7 @@ import { useData } from '../context/DataContext';
 import {
   Camera, Edit3, Save, X, Scale, Ruler, User, Target,
   Calendar, Trash2, ChevronLeft, ChevronRight, Upload,
-  Trophy, Award, Star, Flame, Copy, Users
+  Trophy, Award, Star, Flame, Copy, Users, Moon
 } from 'lucide-react';
 
 const GOAL_COLORS = {
@@ -372,6 +372,9 @@ export default function ClientProfile({ clientId: propClientId }) {
                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
                        {b.icon === 'Star' ? <Star className="w-8 h-8 text-[#ffc105] fill-[#ffc105]" /> :
                         b.icon === 'Flame' ? <Flame className="w-8 h-8 text-[#f87171] fill-[#f87171]" /> :
+                        b.icon === 'Moon' ? <Moon className="w-8 h-8 text-[#a78bfa] fill-[#a78bfa]" /> :
+                        b.icon === 'Trophy' ? <Trophy className="w-8 h-8 text-[#ffc105] fill-[#ffc105]" /> :
+                        b.icon === 'Users' ? <Users className="w-8 h-8 text-[#4ade80]" /> :
                         <Award className="w-8 h-8 text-[#ffc105]" />}
                     </div>
                     <p className="text-[10px] font-black text-white text-center leading-tight">{b.title}</p>

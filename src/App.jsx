@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import { DataProvider } from './context/DataContext';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -27,66 +27,73 @@ const AdminCheckIns = lazy(() => import('./pages/admin/AdminCheckIns'));
 const Analytics = lazy(() => import('./pages/admin/Analytics'));
 const Messages = lazy(() => import('./pages/Messages'));
 const Reminders = lazy(() => import('./pages/admin/Reminders'));
+const ClientActivity = lazy(() => import('./pages/admin/ClientActivity'));
 const Home = lazy(() => import('./pages/Home'));
 
 import InstallPrompt from './components/InstallPrompt';
 import LoadingScreen from './components/LoadingScreen';
+import ErrorBoundary from './components/ErrorBoundary';
+import NetworkStatus from './components/NetworkStatus';
 
 function App() {
   return (
-    <DataProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <Suspense fallback={<LoadingScreen />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              
-              {/* Admin Routes */}
-              <Route element={<ProtectedRoute role="admin" />}>
-                <Route element={<Layout />}>
-                  <Route path="/admin" element={<Dashboard />} />
-                  <Route path="/admin/profile" element={<AdminProfile />} />
-                  <Route path="/admin/analytics" element={<Analytics />} />
-                  <Route path="/admin/clients" element={<Clients />} />
-                  <Route path="/admin/clients/:id" element={<ClientProfile />} />
-                  <Route path="/admin/workout-plans" element={<WorkoutPlans />} />
-                  <Route path="/admin/exercise-library" element={<ExerciseLibrary />} />
-                  <Route path="/admin/meal-plans" element={<MealPlans />} />
-                  <Route path="/admin/check-ins" element={<AdminCheckIns />} />
-                  <Route path="/admin/billing" element={<Billing />} />
-                  <Route path="/admin/bmr-calculator" element={<BMRCalculator />} />
-                  <Route path="/admin/messages" element={<Messages />} />
-                  <Route path="/admin/reminders" element={<Reminders />} />
-                  <Route path="/admin/metrics/:clientId" element={<BodyMetrics />} />
+    <ErrorBoundary>
+      <DataProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingScreen />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                
+                {/* Admin Routes */}
+                <Route element={<ProtectedRoute role="admin" />}>
+                  <Route element={<Layout />}>
+                    <Route path="/admin" element={<Dashboard />} />
+                    <Route path="/admin/profile" element={<AdminProfile />} />
+                    <Route path="/admin/analytics" element={<Analytics />} />
+                    <Route path="/admin/clients" element={<Clients />} />
+                    <Route path="/admin/clients/:id" element={<ClientProfile />} />
+                    <Route path="/admin/workout-plans" element={<WorkoutPlans />} />
+                    <Route path="/admin/exercise-library" element={<ExerciseLibrary />} />
+                    <Route path="/admin/meal-plans" element={<MealPlans />} />
+                    <Route path="/admin/check-ins" element={<AdminCheckIns />} />
+                    <Route path="/admin/billing" element={<Billing />} />
+                    <Route path="/admin/bmr-calculator" element={<BMRCalculator />} />
+                    <Route path="/admin/messages" element={<Messages />} />
+                    <Route path="/admin/reminders" element={<Reminders />} />
+                    <Route path="/admin/metrics/:clientId" element={<BodyMetrics />} />
+                    <Route path="/admin/activity-logs" element={<ClientActivity />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              {/* Client Routes */}
-              <Route element={<ProtectedRoute role="client" />}>
-                <Route element={<Layout />}>
-                  <Route path="/client" element={<Dashboard />} />
-                  <Route path="/client/profile" element={<ClientProfile />} />
-                  <Route path="/client/workout-plan" element={<ClientWorkoutPlan />} />
-                  <Route path="/client/exercise-library" element={<ExerciseBrowse />} />
-                  <Route path="/client/meal-plan" element={<ClientMealPlan />} />
-                  <Route path="/client/metrics" element={<BodyMetrics />} />
-                  <Route path="/client/goal-assist" element={<GoalTracker />} />
-                  <Route path="/client/check-ins" element={<ClientCheckIns />} />
-                  <Route path="/client/billing" element={<ClientBilling />} />
-                  <Route path="/client/bmr-calculator" element={<BMRCalculator />} />
-                  <Route path="/client/messages" element={<Messages />} />
+                {/* Client Routes */}
+                <Route element={<ProtectedRoute role="client" />}>
+                  <Route element={<Layout />}>
+                    <Route path="/client" element={<Dashboard />} />
+                    <Route path="/client/profile" element={<ClientProfile />} />
+                    <Route path="/client/workout-plan" element={<ClientWorkoutPlan />} />
+                    <Route path="/client/exercise-library" element={<ExerciseBrowse />} />
+                    <Route path="/client/meal-plan" element={<ClientMealPlan />} />
+                    <Route path="/client/metrics" element={<BodyMetrics />} />
+                    <Route path="/client/goal-assist" element={<GoalTracker />} />
+                    <Route path="/client/check-ins" element={<ClientCheckIns />} />
+                    <Route path="/client/billing" element={<ClientBilling />} />
+                    <Route path="/client/bmr-calculator" element={<BMRCalculator />} />
+                    <Route path="/client/messages" element={<Messages />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
-          <InstallPrompt />
-        </BrowserRouter>
-      </AuthProvider>
-    </DataProvider>
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+            <InstallPrompt />
+            <NetworkStatus />
+          </BrowserRouter>
+        </AuthProvider>
+      </DataProvider>
+    </ErrorBoundary>
   );
 }
 

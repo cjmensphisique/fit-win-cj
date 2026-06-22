@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import sharp from 'sharp';
-import fs from 'fs';
 import { Client } from './db.js';
 
 // Load env

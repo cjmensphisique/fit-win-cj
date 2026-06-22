@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+import { api } from '../api';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -17,19 +16,10 @@ export default function ForgotPassword() {
     setLoading(true);
     setError('');
     try {
-      const resp = await fetch(`${API_URL}/auth/verify-identity`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-      const data = await resp.json();
-      if (resp.ok) {
-        setStep(2);
-      } else {
-        setError(data.error || 'User with this email not found');
-      }
+      await api.verifyIdentity(email);
+      setStep(2);
     } catch (err) {
-      setError('Connection failed. Please check if the server is running.');
+      setError(err.message || 'User with this email not found');
     } finally {
       setLoading(false);
     }
@@ -40,19 +30,10 @@ export default function ForgotPassword() {
     setLoading(true);
     setError('');
     try {
-      const resp = await fetch(`${API_URL}/auth/reset-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, phone, newPassword })
-      });
-      const data = await resp.json();
-      if (resp.ok) {
-        setSuccess(true);
-      } else {
-        setError(data.error || 'Reset failed. Please verify your phone number.');
-      }
+      await api.resetPassword(email, phone, newPassword);
+      setSuccess(true);
     } catch (err) {
-      setError('Connection failed. Please try again.');
+      setError(err.message || 'Reset failed. Please verify your phone number.');
     } finally {
       setLoading(false);
     }
